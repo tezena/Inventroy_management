@@ -34,27 +34,37 @@ class _MySliderState extends State<MySlider> {
     List<Widget> carouselItems = [
       Container(
         width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 32),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225,1)
         ),
-        child: Center(child: Text("Widget 1")),
+        child:const Column(
+          children: [
+            Text("Lorem ipsum dolor sit amet." ,
+            style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
+            Text("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            style:TextStyle(fontSize: 12)),
+          ],
+        ),
       ),
       Container(
         width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 32),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225,1),
         ),
-        child: Center(child: Text("Widget 2")),
+        child:const Center(child: Text("Widget 2")),
       ),
       Container(
         width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 32),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
           color:  Color.fromRGBO(107, 59, 225,1),
         ),
-        child: Center(child: Text("Widget 3")),
+        child:const  Center(child: Text("Widget 3")),
       ),
       // Add more widgets here
     ];
@@ -69,7 +79,7 @@ class _MySliderState extends State<MySlider> {
                 CarouselSlider(
                   items: carouselItems,
                   options: CarouselOptions(
-                    height: 150,
+                    height: 180,
                     viewportFraction: 1.0,
                     enlargeCenterPage: true,
                     onPageChanged: (index, reason) {
