@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
 import 'package:inventory/Card.dart';
+import 'package:inventory/HomeScreen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,137 +12,126 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'Flutter Demo',
-      home: Scaffold(
-        body: SizedBox(height: MediaQuery.of(context).size.height,
-          child: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child:   Column(
-              children: [
-                  SizedBox(height: 80,),
-                  MySlider(),SizedBox(height: 130,),DisplayCard(), 
-              ],
-            ),
-          ),
-        ),
-      ),
+  Widget  build(BuildContext context) {
+    return const  MaterialApp(
+      title: 'Inventory',
+      home: BottomNavigationScreen()
     );
   }
 }
 
-class MySlider extends StatefulWidget {
-  const MySlider({super.key});
-
+class BottomNavigationScreen extends StatefulWidget {
+  const BottomNavigationScreen({super.key});
   @override
-  _MySliderState createState() => _MySliderState();
+  _BottomNavigationScreenState createState() => _BottomNavigationScreenState();
 }
 
-class _MySliderState extends State<MySlider> {
-  int _currentSlide = 0;
+class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
+  int _currentIndex = 0;
+  
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    Screen1(),
+    Screen2(),
+    Screen3(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> carouselItems = [
-      Container(
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Color.fromRGBO(107, 59, 225,1)
-        ),
-        child:const Column(
-          children: [
-            SizedBox(height: 30,),
-            Text("Lorem ipsum dolor sit amet." ,
-            style: TextStyle(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold),),
-            SizedBox(height: 20,),
-            Padding(
-              padding: EdgeInsets.only(left: 15,right: 10),
-              child: Text("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              style:TextStyle(fontSize: 16,color: Colors.white)),
-            ),
-          ],
-        ),
+    return Scaffold(
+    
+      body: PageStorage(
+        bucket: PageStorageBucket(), // Use a custom PageStorageBucket
+        child: _screens[_currentIndex],
       ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Color.fromRGBO(107, 59, 225,1),
-        ),
-        child:const HeroSec(),
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color:  Color.fromRGBO(107, 59, 225,1),
-        ),
-        child:const HeroSec(),
-      ),
-      // Add more widgets here
-    ];
+      bottomNavigationBar: SizedBox(
 
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              CarouselSlider(
-                items: carouselItems,
-                options: CarouselOptions(
-                  height: 180,
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: true,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _currentSlide = index;
-                    });
-                  },
-                ),
+        child: Container(
+          decoration:const BoxDecoration(border: Border(top: BorderSide(width: 2,color:Color.fromRGBO(107, 59, 225,1)))),
+          child: BottomNavigationBar(
+            showUnselectedLabels: true,
+            currentIndex: _currentIndex,
+            selectedItemColor:Color.fromRGBO(107, 59, 225,1),
+            unselectedItemColor: Colors.black,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            iconSize:31 ,
+    
+            
+          
+            unselectedFontSize: 14,
+            selectedFontSize: 16,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home,),
+                label: "Home"),
+                
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Screen 2',
               ),
-              Positioned(
-                top: 12.0,
-                right: 40.0,
-                child: CarouselStatus(
-                  itemCount: carouselItems.length,
-                  currentSlide: _currentSlide,
-                ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Screen 3',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Screen 4',
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class CarouselStatus extends StatelessWidget {
-  final int itemCount;
-  final int currentSlide;
-
-  CarouselStatus({required this.itemCount, required this.currentSlide});
-
+class Screen1 extends StatelessWidget {
+  const Screen1({super.key});
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        for (int index = 0; index < itemCount; index++)
-          Container(
-            width: 8,
-            height: 8,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: currentSlide == index ? Color.fromARGB(255, 30, 69, 224) : Colors.white,
-            ),
-          ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Screen 1'),
+      ),
+      body: const Center(
+        child: Text('Screen 1 Content'),
+      ),
+    );
+  }
+}
+
+class Screen2 extends StatelessWidget {
+  const Screen2({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Screen 2'),
+      ),
+      body: Center(
+        child: Text('Screen 2 Content'),
+      ),
+    );
+  }
+}
+
+class Screen3 extends StatelessWidget {
+  const Screen3({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Screen 1'),
+      ),
+      body: Center(
+        child: Text('Screen 1 Content'),
+      ),
     );
   }
 }

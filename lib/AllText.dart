@@ -25,7 +25,7 @@ class _InfoState extends State<Info> {
             height: 10,
           ),
           Text(
-            "Total",
+            "Totall",
             style: TextStyle(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
           )
