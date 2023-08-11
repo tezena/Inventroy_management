@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
@@ -19,22 +18,33 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              suffixIcon: Icon(Icons.search),
+          Container(
+            width: 250.0, // Adjust the width as needed
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.grey[300],
             ),
-            onChanged: (value) {
-              // Handle search logic here
-              // You can filter your data based on the value entered
-            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  hintText: 'Search',
+                  border: InputBorder.none,
+                  
+                ),
+                onChanged: (value) {
+                  // Handle search logic here
+                  // You can filter your data based on the value entered
+                },
+              ),
+            ),
           ),
-         const  SizedBox(height: 16),
+          SizedBox(height: 16),
           // Add your search results or other widgets here
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
-
+import 'package:inventory/Card.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -11,14 +11,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            MySlider()
-          ],
+        body: SizedBox(height: MediaQuery.of(context).size.height,
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child:   Column(
+              children: [
+                  SizedBox(height: 80,),
+                  MySlider(),SizedBox(height: 130,),DisplayCard(), 
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -84,32 +89,30 @@ class _MySliderState extends State<MySlider> {
       padding: const EdgeInsets.all(12.0),
       child: Column(
         children: [
-          Expanded(
-            child: Stack(
-              children: [
-                CarouselSlider(
-                  items: carouselItems,
-                  options: CarouselOptions(
-                    height: 180,
-                    viewportFraction: 1.0,
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentSlide = index;
-                      });
-                    },
-                  ),
+          Stack(
+            children: [
+              CarouselSlider(
+                items: carouselItems,
+                options: CarouselOptions(
+                  height: 180,
+                  viewportFraction: 1.0,
+                  enlargeCenterPage: true,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentSlide = index;
+                    });
+                  },
                 ),
-                Positioned(
-                  top: 12.0,
-                  right: 40.0,
-                  child: CarouselStatus(
-                    itemCount: carouselItems.length,
-                    currentSlide: _currentSlide,
-                  ),
+              ),
+              Positioned(
+                top: 12.0,
+                right: 40.0,
+                child: CarouselStatus(
+                  itemCount: carouselItems.length,
+                  currentSlide: _currentSlide,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
