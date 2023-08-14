@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
 import 'package:inventory/FCard.dart';
 import 'package:inventory/HomeScreen.dart';
+import 'package:inventory/Screen1.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,8 +52,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           child: BottomNavigationBar(
             showUnselectedLabels: true,
             currentIndex: _currentIndex,
-            selectedItemColor:Color.fromRGBO(107, 59, 225,1),
-            unselectedItemColor: Colors.black,
+            selectedItemColor:Color.fromRGBO(107, 11, 232, 1),
+            unselectedItemColor: Color.fromRGBO(107, 59, 225,1),
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
             iconSize:31 ,
@@ -72,8 +73,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 label: "Home"),
                 
               BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Screen 2',
+                icon: Icon(Icons.inventory_2_rounded),
+                label: 'Items',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
@@ -91,20 +92,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   }
 }
 
-class Screen1 extends StatelessWidget {
-  const Screen1({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Screen 1'),
-      ),
-      body: const Center(
-        child: Text('Screen 1 Content'),
-      ),
-    );
-  }
-}
+
 
 class Screen2 extends StatelessWidget {
   const Screen2({super.key});
