@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
-import 'package:inventory/Card.dart';
+import 'package:inventory/FCard.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,18 +9,66 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
-      child: const Padding(
+      child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
-              height: 80,
+            const SizedBox(
+              height: 10,
+            ),Container(
+              height: 30,
+              child:  Row(children: [SizedBox(width: 26,),const Text(
+                  "Home",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),SizedBox(width: MediaQuery.of(context).size.width*.55,),const Icon(Icons.account_circle_outlined,
+              size: 30,),const Icon(Icons.notifications_none_outlined,size: 30,),]),
             ),
-            MySlider(),
-            SizedBox(
-              height: 130,
+            SizedBox(height: 20,),
+            const MySlider(),
+            const SizedBox(
+              height: 15,
             ),
-            DisplayCard(),
+            SizedBox(
+              height: 50,
+              width: MediaQuery.of(context).size.width * 0.82,
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  hintText: "Search...",
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromRGBO(107, 59, 225, 1),
+                          width: 3,
+                          style: BorderStyle.solid)),
+                  prefixIcon: Icon(Icons.search_outlined),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            const Row(
+              children: [
+                SizedBox(
+                  width: 26,
+                ),
+                Text(
+                  "Hello",
+                  style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const DisplayCard(),
           ],
         ),
       ),

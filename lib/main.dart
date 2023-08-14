@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
-import 'package:inventory/Card.dart';
+import 'package:inventory/FCard.dart';
 import 'package:inventory/HomeScreen.dart';
 
 void main() {
