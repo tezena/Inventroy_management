@@ -4,6 +4,7 @@ import 'package:inventory/Screen1.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventory/AddItemScreen.dart';
 import 'package:inventory/NotificationScreen.dart';
+import 'package:inventory/profileScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,6 +49,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     const ItemsScreen(),
     AddProductForm(),
     NotificationPage(),
+    ProfilePage(),
   ];
 
   @override
@@ -95,6 +97,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
                 label: 'Screen 4',
+              ), BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Screen 5',
               ),
             ],
           ),
@@ -104,32 +109,4 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   }
 }
 
-class Screen2 extends StatelessWidget {
-  const Screen2({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Screen 2'),
-      ),
-      body: const Center(
-        child: Text('Screen 3 Content'),
-      ),
-    );
-  }
-}
 
-class Screen3 extends StatelessWidget {
-  const Screen3({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Screen 1'),
-      ),
-      body: const Center(
-        child: Text('Screen 1 Content'),
-      ),
-    );
-  }
-}

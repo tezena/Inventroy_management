@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
 import 'package:inventory/FCard.dart';
 
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override

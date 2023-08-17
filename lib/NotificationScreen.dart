@@ -86,7 +86,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         children: [
                           Text(
                             notifications[index].title,
-                            style: TextStyle(
+                            style:const  TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18.0,
                             ),
@@ -94,14 +94,14 @@ class _NotificationPageState extends State<NotificationPage> {
                           SizedBox(height: 8.0),
                           Text(
                             notifications[index].details,
-                            style: TextStyle(
+                            style:const TextStyle(
                               fontSize: 16.0,
                             ),
                           ),
                           if (!notifications[index].isRead)
                             TextButton(
                               onPressed: () => _markAsRead(index),
-                              child: Text(
+                              child:const Text(
                                 'Mark as Read ',
                                 style: TextStyle(
                                     color: Color.fromRGBO(107, 59, 225, 1)),
@@ -121,7 +121,7 @@ class _NotificationPageState extends State<NotificationPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  style: ButtonStyle(
+                  style: const  ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
                           Color.fromRGBO(107, 59, 225, 1))),
                   onPressed: () {
@@ -129,7 +129,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       notifications.clear();
                     });
                   },
-                  child: Text('Clear All'),
+                  child:const  Text('Clear All'),
                 ),
               ],
             ),
