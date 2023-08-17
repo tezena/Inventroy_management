@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           // Add your search results or other widgets here
         ],
       ),

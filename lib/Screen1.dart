@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import "package:inventory/ItemsCard.dart";
+import 'package:go_router/go_router.dart';
 
-class Screen1 extends StatelessWidget {
+class ItemsScreen extends StatelessWidget {
+  const ItemsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -81,16 +84,14 @@ class ItemsListState extends State<ItemsList> {
                        padding: const EdgeInsets.only(top: 40,bottom: 5,left: 10,right: 10),
                        child: Row(
                          children: [IconButton(icon:const  Icon( Icons.arrow_back_outlined,color:Colors.white,size:30, ),
-                         onPressed: (){
-                          Navigator.of(context).pop();
-                         },),
+                         onPressed: ()=>context.go("/home"),),
                          SizedBox(width: MediaQuery.of(context).size.width*.28,),
                           const Text(
                              "All Items",
                              style:
                                  TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
                            ),SizedBox(width: MediaQuery.of(context).size.width*.28),
-                           Icon(Icons.notifications_none_outlined,color: Colors.white,size: 30,)
+                           const Icon(Icons.notifications_none_outlined,color: Colors.white,size: 30,)
                          ],
                        ),
                      ),

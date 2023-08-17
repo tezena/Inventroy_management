@@ -7,26 +7,46 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Scaffold(
+        body: SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             const SizedBox(
-              height: 10,
-            ),Container(
               height: 30,
-              child:  Row(children: [SizedBox(width: 26,),const Text(
+            ),
+            SizedBox(
+              height: 30,
+              child: Row(children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .8,
+                ),
+                const Icon(
+                  Icons.account_circle_outlined,
+                  size: 30,
+                ),
+                const Icon(
+                  Icons.notifications_none_outlined,
+                  size: 30,
+                ),
+              ]),
+            ),
+            const Row(
+              children: [
+                SizedBox(
+                  width: 30,
+                ),
+                Text(
                   "Home",
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
-                ),SizedBox(width: MediaQuery.of(context).size.width*.55,),const Icon(Icons.account_circle_outlined,
-              size: 30,),const Icon(Icons.notifications_none_outlined,size: 30,),]),
+                ),
+              ],
             ),
-            SizedBox(height: 20,),
             const MySlider(),
             const SizedBox(
               height: 15,
@@ -55,14 +75,6 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   width: 26,
                 ),
-                Text(
-                  "Hello",
-                  style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
-                ),
               ],
             ),
             const SizedBox(
@@ -72,7 +84,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -179,7 +191,8 @@ class CarouselStatus extends StatelessWidget {
   final int itemCount;
   final int currentSlide;
 
-  CarouselStatus({required this.itemCount, required this.currentSlide});
+  const CarouselStatus(
+      {super.key, required this.itemCount, required this.currentSlide});
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +206,7 @@ class CarouselStatus extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: currentSlide == index
-                  ? Color.fromARGB(255, 30, 69, 224)
+                  ? const Color.fromARGB(255, 30, 69, 224)
                   : Colors.white,
             ),
           ),

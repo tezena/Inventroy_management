@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import "package:inventory/AllText.dart";
-import 'package:inventory/FCard.dart';
 import 'package:inventory/HomeScreen.dart';
 import 'package:inventory/Screen1.dart';
+import 'package:go_router/go_router.dart';
+import 'package:inventory/AddItemScreen.dart';
+import 'package:inventory/NotificationScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
-  Widget  build(BuildContext context) {
-    return const  MaterialApp(
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
       title: 'Inventory',
-      home: BottomNavigationScreen()
+      routerConfig: _router,
     );
   }
+
+  final _router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => HomeScreen(),
+      ),
+      GoRoute(
+        path: '/',
+        builder: (context, state) => BottomNavigationScreen(),
+      ),
+    ],
+  );
 }
 
 class BottomNavigationScreen extends StatefulWidget {
@@ -29,37 +42,35 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
-  
+
   final List<Widget> _screens = [
     const HomeScreen(),
-    Screen1(),
-    Screen2(),
-    Screen3(),
+    const ItemsScreen(),
+    AddProductForm(),
+    NotificationPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: PageStorage(
         bucket: PageStorageBucket(), // Use a custom PageStorageBucket
         child: _screens[_currentIndex],
       ),
       bottomNavigationBar: SizedBox(
-
         child: Container(
-          decoration:const BoxDecoration(border: Border(top: BorderSide(width: 2,color:Color.fromRGBO(107, 59, 225,1)))),
+          decoration: const BoxDecoration(
+              border: Border(
+                  top: BorderSide(
+                      width: 2, color: Color.fromRGBO(107, 59, 225, 1)))),
           child: BottomNavigationBar(
             showUnselectedLabels: true,
             currentIndex: _currentIndex,
-            selectedItemColor:Color.fromRGBO(107, 11, 232, 1),
-            unselectedItemColor: Color.fromRGBO(107, 59, 225,1),
+            selectedItemColor: const Color.fromRGBO(107, 11, 232, 1),
+            unselectedItemColor: const Color.fromRGBO(107, 59, 225, 1),
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
-            iconSize:31 ,
-    
-            
-          
+            iconSize: 31,
             unselectedFontSize: 14,
             selectedFontSize: 16,
             onTap: (index) {
@@ -69,16 +80,17 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             },
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home,),
-                label: "Home"),
-                
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: "Home"),
               BottomNavigationBarItem(
                 icon: Icon(Icons.inventory_2_rounded),
                 label: 'Items',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: 'Screen 3',
+                label: 'Screen',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
@@ -92,18 +104,16 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   }
 }
 
-
-
 class Screen2 extends StatelessWidget {
   const Screen2({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Screen 2'),
+        title: const Text('Screen 2'),
       ),
-      body: Center(
-        child: Text('Screen 2 Content'),
+      body: const Center(
+        child: Text('Screen 3 Content'),
       ),
     );
   }
@@ -115,9 +125,9 @@ class Screen3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Screen 1'),
+        title: const Text('Screen 1'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Screen 1 Content'),
       ),
     );

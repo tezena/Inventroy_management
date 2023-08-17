@@ -5,7 +5,7 @@ class ImageTextCard extends StatelessWidget {
   final String text;
   final bool isTrue;
 
-  ImageTextCard({
+  const ImageTextCard({super.key, 
     required this.imagePath,
     required this.text,
     this.isTrue =false,
@@ -17,14 +17,14 @@ class ImageTextCard extends StatelessWidget {
       height: MediaQuery.of(context).size.height*.22,
       width: MediaQuery.of(context).size.width*.42,
       child: Card(
-        margin: EdgeInsets.all(7),
-        color: isTrue?Colors.white:Color.fromRGBO(107, 59, 225,1),
-        shape:  RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)),
+        margin: const EdgeInsets.all(7),
+        color: isTrue?Colors.white:const Color.fromRGBO(107, 59, 225,1),
+        shape:  RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(10)),
         side:isTrue?const BorderSide(width: 4,color:Color.fromRGBO(107, 59, 225,1)):BorderSide.none),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             SizedBox(
               height: 80,
               width: 150,
@@ -53,8 +53,8 @@ class DisplayCard extends StatelessWidget {
   const DisplayCard({super.key});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20 ,right: 20),
+    return const Padding(
+      padding: EdgeInsets.only(left: 20 ,right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -78,6 +78,7 @@ class DisplayCard extends StatelessWidget {
                 imagePath: 'assets/images/inventory.png',
                 text: 'Inventory Count',
                isTrue:true,
+               
               ),
                 ImageTextCard(
                 imagePath: 'assets/images/inventory.png',

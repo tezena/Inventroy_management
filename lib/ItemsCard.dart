@@ -7,7 +7,7 @@ class ItmeCard extends StatelessWidget {
   final String quntity;
   final bool isTrue;
 
-  ItmeCard({
+  const ItmeCard({super.key, 
     required this.imagePath,
     required this.name,
     required this.price,
@@ -21,10 +21,10 @@ class ItmeCard extends StatelessWidget {
       height: MediaQuery.of(context).size.height * .40,
       width: MediaQuery.of(context).size.width * .45,
       child: Card(
-        margin: EdgeInsets.all(7),
-        color: isTrue ? Colors.white : Color.fromRGBO(107, 59, 225, 1),
+        margin: const EdgeInsets.all(7),
+        color: isTrue ? Colors.white : const Color.fromRGBO(107, 59, 225, 1),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
             side: isTrue
                 ? const BorderSide(
                     width: 2, color: Color.fromRGBO(107, 59, 225, 1))
@@ -37,7 +37,7 @@ class ItmeCard extends StatelessWidget {
               height: 110,
               width: 100,
               child:ClipRRect( 
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
                 child:Image.asset(
                 imagePath,
                 fit: BoxFit.cover,
@@ -58,7 +58,7 @@ class ItmeCard extends StatelessWidget {
                 Padding(
                  padding: const EdgeInsets.only(top: 10, left: 8, right: 20),
                   child: Text(
-                   "price:" + price,
+                   "price:$price",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class ItmeCard extends StatelessWidget {
                 Padding(
                 padding: const EdgeInsets.only(top: 10, left: 8, right: 20),
                   child: Text(
-                   "Quantity:" + quntity,
+                   "Quantity:$quntity",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
