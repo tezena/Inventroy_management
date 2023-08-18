@@ -123,25 +123,25 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
+          const   CircleAvatar(
                 radius: 75,
                 backgroundImage:
                     NetworkImage('https://via.placeholder.com/150'),
                 backgroundColor: Color.fromRGBO(107, 59, 225, 1)),
-            SizedBox(height: 16.0),
-            Text(
+          const   SizedBox(height: 16.0),
+           const  Text(
               'Full Name',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            SizedBox(height: 8.0),
-            Text('Email Address'),
-            SizedBox(height: 8.0),
-            Text('Phone Number'),
-            SizedBox(height: 8.0),
-            Text('Username'),
-            SizedBox(height: 16.0),
+          const   SizedBox(height: 8.0),
+           const   Text('Email Address'),
+             const SizedBox(height: 8.0),
+             const Text('Phone Number'),
+            const  SizedBox(height: 8.0),
+            const  Text('Username'),
+            const  SizedBox(height: 16.0),
             ElevatedButton(
-              style: ButtonStyle(
+              style: const  ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(
                       Color.fromRGBO(107, 59, 225, 1))),
               onPressed: () {

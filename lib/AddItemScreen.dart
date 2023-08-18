@@ -59,27 +59,10 @@ class _AddProductFormState extends State<AddProductForm> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(107, 59, 225, 1),
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back_outlined,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: () => {},
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * .23,
-            ),
-            const Text(
-              "Add Items",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ],
+        title: Text(
+          "Add Items",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Padding(

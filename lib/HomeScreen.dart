@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
 import 'package:inventory/FCard.dart';
-
+import 'package:inventory/NotificationScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,16 +22,24 @@ class HomeScreen extends StatelessWidget {
               height: 30,
               child: Row(children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * .8,
+                  width: MediaQuery.of(context).size.width * .75,
                 ),
                 const Icon(
                   Icons.account_circle_outlined,
                   size: 30,
                 ),
-                const Icon(
-                  Icons.notifications_none_outlined,
-                  size: 30,
-                ),
+                IconButton(
+                    padding: EdgeInsets.only(bottom: 5),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NotificationPage()));
+                    },
+                    icon: Icon(
+                      Icons.notifications_none_outlined,
+                      size: 30,
+                    ))
               ]),
             ),
             const Row(
@@ -61,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                   hintText: "Search...",
                   border: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Color.fromRGBO(107, 59, 225, 1),
+                          color: Color.fromRGBO(107, 59, 225, .85),
                           width: 3,
                           style: BorderStyle.solid)),
                   prefixIcon: Icon(Icons.search_outlined),

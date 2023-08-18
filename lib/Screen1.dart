@@ -54,8 +54,7 @@ class ItemsListState extends State<ItemsList> {
         image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
     ItemModel(
         image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234")
+    ItemModel(image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234")
   ];
 
   bool isLoading = false;
@@ -63,6 +62,21 @@ class ItemsListState extends State<ItemsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(107, 59, 225, 1),
+        title: Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .35,
+            ),
+            Text(
+              "All Items",
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: false,
+      ),
       resizeToAvoidBottomInset: false,
       body: isLoading
           ? Center(
@@ -77,31 +91,12 @@ class ItemsListState extends State<ItemsList> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-        
-                   Container(
-                     decoration:const  BoxDecoration(color:Color.fromRGBO(107, 59, 225,1) ),
-                     child: Padding(
-                       padding: const EdgeInsets.only(top: 40,bottom: 5,left: 10,right: 10),
-                       child: Row(
-                         children: [IconButton(icon:const  Icon( Icons.arrow_back_outlined,color:Colors.white,size:30, ),
-                         onPressed: ()=>context.go("/home"),),
-                         SizedBox(width: MediaQuery.of(context).size.width*.28,),
-                          const Text(
-                             "All Items",
-                             style:
-                                 TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                           ),SizedBox(width: MediaQuery.of(context).size.width*.28),
-                           const Icon(Icons.notifications_none_outlined,color: Colors.white,size: 30,)
-                         ],
-                       ),
-                     ),
-                   ),
                   const SizedBox(
                     height: 12,
                   ),
                   productModelList.isEmpty
                       ? const Center(
-                          child: Text("Best product is Empty"),
+                          child: Text(" product is Empty"),
                         )
                       : Padding(
                           padding: const EdgeInsets.all(
