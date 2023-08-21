@@ -22,7 +22,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     const HomeScreen(),
     const ItemsScreen(),
     ProfilePage(),
-    const EditScreen(),
     const DeleteScreen(),
     // Add other screen widgets here
   ];
@@ -68,10 +67,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
                 label: 'Screen 4',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Edit',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),

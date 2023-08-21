@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:inventory/EditScreen.dart';
+import 'package:inventory/productDetail.dart';
 
 class ItmeCard extends StatelessWidget {
   final String imagePath;
@@ -26,7 +27,19 @@ class ItmeCard extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditScreen()),
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailPage(
+                    productName: 'Nike shoe',
+                    productImageUrl: 'assets/images/shoe1.jpg',
+                    stockInAmount: 100.0,
+                    stockOutAmount: 50.0,
+                    runningOutAmount: 50.0,
+                    productPrice: 19.99,
+                    expiryDate: '2023-12-31',
+                    supplier: 'Example Supplier',
+                    availableUnits: 30,
+                  ),
+                ),
               );
             },
             child: Card(

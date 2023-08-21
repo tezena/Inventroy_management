@@ -15,11 +15,11 @@ void main() {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Inventory',
       routerConfig: _router,
     );
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/register',
-        builder: (context, state) =>RegisterView() ,
+        builder: (context, state) => RegisterView(),
       ),
       GoRoute(
         path: '/login',
@@ -82,11 +82,12 @@ class RegisterPage extends StatelessWidget {
         title: Text('Register'),
       ),
       body: Center(
-        child:ElevatedButton(
-          onPressed:  () {
-      GoRouter.of(context).go('/login');
-    },
-          child: Text("login"),) ,
+        child: ElevatedButton(
+          onPressed: () {
+            GoRouter.of(context).go('/login');
+          },
+          child: Text("login"),
+        ),
       ),
     );
   }
@@ -101,11 +102,12 @@ class LoginPage extends StatelessWidget {
         title: Text('Login'),
       ),
       body: Center(
-        child:ElevatedButton(
-          onPressed:  () {
-      GoRouter.of(context).go('/home');
-    },
-          child: Text("home"),),
+        child: ElevatedButton(
+          onPressed: () {
+            GoRouter.of(context).go('/home');
+          },
+          child: Text("home"),
+        ),
       ),
     );
   }
