@@ -31,11 +31,12 @@ class ReportPage extends StatelessWidget {
         title: Row(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width * .2,
+              width: MediaQuery.of(context).size.width * .3,
             ),
             Text('Inventory Report'),
           ],
         ),
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -164,7 +165,6 @@ class ReportPage extends StatelessWidget {
               ),
             ],
           ),
-        
         ),
       ),
     );
@@ -326,4 +326,3 @@ class Category {
 
   Category(this.name, this.percentage);
 }
-

@@ -96,12 +96,17 @@ class _AddProductFormState extends State<AddProductForm> {
               const SizedBox(height: 30.0),
               TextFormField(
                 controller: _nameController,
+                cursorColor: Color.fromRGBO(107, 59, 225, 1),
                 decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple),
-                  ),
-                ),
+                    labelText: "Name",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a name';
@@ -112,13 +117,17 @@ class _AddProductFormState extends State<AddProductForm> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _quantityController,
+                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
                 decoration: const InputDecoration(
-                  labelText: 'Quantity',
-                  border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(107, 59, 225, 1)),
-                  ),
-                ),
+                    labelText: "Quantity",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -130,12 +139,17 @@ class _AddProductFormState extends State<AddProductForm> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(
-                  labelText: 'Price',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple),
-                  ),
-                ),
+                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                decoration: const InputDecoration(
+                    labelText: "Price",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -147,12 +161,17 @@ class _AddProductFormState extends State<AddProductForm> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _distributorController,
-                decoration: InputDecoration(
-                  labelText: 'Distributor',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple),
-                  ),
-                ),
+                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                decoration: const InputDecoration(
+                    labelText: "Distributer",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a distributor';
@@ -163,12 +182,17 @@ class _AddProductFormState extends State<AddProductForm> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _categoryController,
-                decoration: InputDecoration(
-                  labelText: 'Category',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple),
-                  ),
-                ),
+                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                decoration: const InputDecoration(
+                    labelText: "Category",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a category';

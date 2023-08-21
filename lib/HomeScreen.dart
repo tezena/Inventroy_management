@@ -10,8 +10,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SizedBox(
-      height: MediaQuery.of(context).size.height,
+        body: SingleChildScrollView(
+            child: SizedBox(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -61,15 +61,26 @@ class HomeScreen extends StatelessWidget {
               height: 50,
               width: MediaQuery.of(context).size.width * 0.82,
               child: TextFormField(
+                cursorColor: Color.fromRGBO(107, 59, 225, 1),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   hintText: "Search...",
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Color.fromRGBO(107, 59, 225, .85),
-                          width: 3,
-                          style: BorderStyle.solid)),
-                  prefixIcon: Icon(Icons.search_outlined),
+                        width: 2,
+                        color: Color.fromRGBO(107, 59, 225, 1),
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  prefixIcon: Icon(
+                    Icons.search_outlined,
+                    color: Color.fromRGBO(107, 59, 225, 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromRGBO(107, 59, 225, 1), width: 4)),
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ),
@@ -90,7 +101,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    )));
   }
 }
 
@@ -167,6 +178,8 @@ class _MySliderState extends State<MySlider> {
               CarouselSlider(
                 items: carouselItems,
                 options: CarouselOptions(
+                  autoPlayCurve: Curves.decelerate,
+                  autoPlay: true,
                   height: 180,
                   viewportFraction: 1.0,
                   enlargeCenterPage: true,
