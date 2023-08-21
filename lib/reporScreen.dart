@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -7,17 +5,17 @@ class ReportPage extends StatelessWidget {
   final double totalStockAmount = 5000.0;
   final int totalCategories = 10;
   final List<Product> runningOutProducts = [
-    Product('Product A', 5),
-    Product('Product B', 8),
-    Product('Product C', 10),
-    Product('Product A', 5),
-    Product('Product B', 8),
-    Product('Product C', 10),
+    Product('Product A', 5, "assets/images/shoe1.jpg"),
+    Product('Product B', 8, "assets/images/shoe1.jpg"),
+    Product('Product C', 10, "assets/images/shoe1.jpg"),
+    Product('Product A', 5, "assets/images/shoe1.jpg"),
+    Product('Product B', 8, "assets/images/shoe1.jpg"),
+    Product('Product C', 10, "assets/images/shoe1.jpg"),
   ];
   final List<Product> topSellingProducts = [
-    Product('Product D', 15),
-    Product('Product E', 12),
-    Product('Product F', 20),
+    Product('Product D', 15, "assets/images/shoe1.jpg"),
+    Product('Product E', 12, "assets/images/shoe1.jpg"),
+    Product('Product F', 20, "assets/images/shoe1.jpg"),
   ];
   final List<Category> categoryDistribution = [
     Category('Category X', 30),
@@ -96,15 +94,16 @@ class ReportPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          width: 100.0,
-                          height: 100.0,
-                          color: Colors.red,
-                          alignment: Alignment.center,
-                          child: Text(
-                            product.name,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                            width: 100.0,
+                            height: 100.0,
+                            // color: Colors.red,
+                            alignment: Alignment.center,
+                            child: ClipRRect(
+                              child: Image.asset(
+                                product.ImageUrl,
+                                fit: BoxFit.fill,
+                              ),
+                            )),
                         SizedBox(height: 4.0),
                         Text('Quantity: ${product.quantity}'),
                       ],
@@ -122,24 +121,50 @@ class ReportPage extends StatelessWidget {
   Widget _buildTopSellingProducts() {
     return Card(
       child: Container(
-        width: 300.0, // Adjust the width to your preference
+        width: 400.0, // Adjust the width to your preference
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Top Selling Products asdfghjk 1234567890zxcvbnm, ',
+                'Top selling Products',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: topSellingProducts.map((product) {
-                  return Text('${product.name}: ${product.quantity}');
-                }).toList(),
+              SizedBox(
+                height: 140.0,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: topSellingProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = topSellingProducts[index];
+                    return Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Container(
+                              width: 100.0,
+                              height: 100.0,
+                              // color: Colors.red,
+                              alignment: Alignment.center,
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  product.ImageUrl,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
+                          SizedBox(height: 4.0),
+                          Text('Sold: ${product.quantity}'),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
+        
         ),
       ),
     );
@@ -164,7 +189,7 @@ class ReportPage extends StatelessWidget {
                   // Configure your line chart data here (mock data provided)
                   titlesData: FlTitlesData(show: true),
                   borderData: FlBorderData(show: true),
-                  gridData: FlGridData(show: true),
+                  gridData: FlGridData(show: false),
                   lineBarsData: [
                     LineChartBarData(
                       spots: [
@@ -205,9 +230,9 @@ class ReportPage extends StatelessWidget {
               child: BarChart(
                 BarChartData(
                   // Configure your bar chart data here (mock data provided)
-                  titlesData: FlTitlesData(show: false),
-                  borderData: FlBorderData(show: false),
-                  gridData: FlGridData(show: false),
+                  titlesData: FlTitlesData(show: true),
+                  borderData: FlBorderData(show: true),
+                  gridData: FlGridData(show: true),
                   barGroups: categoryDistribution.map((category) {
                     return BarChartGroupData(
                       x: category.percentage,
@@ -290,8 +315,9 @@ Widget _buildTotalCategoryCircularIndicator(String text) {
 class Product {
   final String name;
   final int quantity;
+  final String ImageUrl;
 
-  Product(this.name, this.quantity);
+  Product(this.name, this.quantity, this.ImageUrl);
 }
 
 class Category {
@@ -301,6 +327,3 @@ class Category {
   Category(this.name, this.percentage);
 }
 
-void main() {
-  runApp(MaterialApp(home: ReportPage()));
-}

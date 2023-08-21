@@ -8,6 +8,7 @@ import 'package:inventory/profileScreen.dart';
 import "package:inventory/EditScreen.dart";
 import "package:inventory/DeleteScreen.dart";
 import 'package:inventory/LoginScreen.dart';
+import 'package:inventory/reporScreen.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -22,6 +23,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     const HomeScreen(),
     const ItemsScreen(),
     ProfilePage(),
+     ReportPage(),
     const DeleteScreen(),
     // Add other screen widgets here
   ];
@@ -70,6 +72,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
+                label: 'Delete',
+              ),
+               BottomNavigationBarItem(
+                icon: Icon(Icons.report_outlined),
                 label: 'Delete',
               ),
             ],
