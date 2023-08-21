@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/HomeScreen.dart';
-import 'package:inventory/Screen1.dart';
+import 'package:inventory/ItemsList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventory/AddItemScreen.dart';
 import 'package:inventory/NotificationScreen.dart';
@@ -112,4 +112,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-

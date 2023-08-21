@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import "package:inventory/AddItemScreen.dart";
+import 'package:inventory/BottomNavigationBar.dart';
+import 'package:inventory/HomeScreen.dart';
+import 'package:inventory/ItemsList.dart';
+import 'package:inventory/reporScreen.dart';
 
 class ImageTextCard extends StatelessWidget {
   final String imagePath;
@@ -20,11 +24,17 @@ class ImageTextCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width * .42,
       child: GestureDetector(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddProductForm(),
-                ));
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              if (text == "Add Items") {
+                return AddProductForm();
+              } else if (text == "Inventory Count") {
+                return ReportPage();
+              } else if (text == "Inventory") {
+                return ItemsScreen();
+              } else {
+                return BottomNavigationScreen();
+              }
+            }));
           },
           child: Card(
             margin: const EdgeInsets.all(7),

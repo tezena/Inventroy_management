@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/HomeScreen.dart';
-import 'package:inventory/Screen1.dart';
+import 'package:inventory/ItemsList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventory/AddItemScreen.dart';
 import 'package:inventory/NotificationScreen.dart';
@@ -22,10 +22,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const ItemsScreen(),
+    ReportPage(),
     ProfilePage(),
-     ReportPage(),
-    const DeleteScreen(),
-    // Add other screen widgets here
   ];
 
   @override
@@ -67,16 +65,12 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                 label: 'Items',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Screen 4',
+                icon: Icon(Icons.data_object_outlined),
+                label: 'Report',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Delete',
-              ),
-               BottomNavigationBarItem(
-                icon: Icon(Icons.report_outlined),
-                label: 'Delete',
+                icon: Icon(Icons.account_circle),
+                label: 'User',
               ),
             ],
           ),

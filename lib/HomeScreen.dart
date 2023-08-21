@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import "package:inventory/AllText.dart";
 import 'package:inventory/FCard.dart';
 import 'package:inventory/NotificationScreen.dart';
+import 'package:inventory/profileScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,11 +23,7 @@ class HomeScreen extends StatelessWidget {
               height: 30,
               child: Row(children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * .75,
-                ),
-                const Icon(
-                  Icons.account_circle_outlined,
-                  size: 30,
+                  width: MediaQuery.of(context).size.width * .8,
                 ),
                 IconButton(
                     padding: EdgeInsets.only(bottom: 5),
