@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class ReportPage extends StatelessWidget {
-  final double totalStockAmount = 5000.0;
-  final int totalCategories = 10;
+  final double totalStockAmount = 4321;
+  final int totalCategories = 3;
   final List<Product> runningOutProducts = [
     Product('Product A', 5, "assets/images/shoe1.jpg"),
     Product('Product B', 8, "assets/images/shoe1.jpg"),
@@ -97,7 +97,6 @@ class ReportPage extends StatelessWidget {
                         Container(
                             width: 100.0,
                             height: 100.0,
-                            // color: Colors.red,
                             alignment: Alignment.center,
                             child: ClipRRect(
                               child: Image.asset(
@@ -124,11 +123,11 @@ class ReportPage extends StatelessWidget {
       child: Container(
         width: 400.0, // Adjust the width to your preference
         child: Padding(
-          padding:const  EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             const  Text(
+              const Text(
                 'Top selling Products',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
@@ -155,7 +154,7 @@ class ReportPage extends StatelessWidget {
                                   fit: BoxFit.fill,
                                 ),
                               )),
-                         const  SizedBox(height: 4.0),
+                          const SizedBox(height: 4.0),
                           Text('Sold: ${product.quantity}'),
                         ],
                       ),
@@ -194,10 +193,10 @@ class ReportPage extends StatelessWidget {
                     LineChartBarData(
                       spots: [
                         FlSpot(0, 10),
-                        FlSpot(1, 20),
-                        FlSpot(2, 15),
-                        FlSpot(3, 18),
-                        FlSpot(4, 25),
+                        FlSpot(2, 20),
+                        FlSpot(4, 15),
+                        FlSpot(6, 18),
+                        FlSpot(8, 25),
                       ],
                       color: Colors.blue,
                       isCurved: true,

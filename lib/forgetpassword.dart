@@ -1,19 +1,21 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 class ForgetPasswordPage extends StatefulWidget {
-  const ForgetPasswordPage ({Key? key}) : super(key: key);
+  const ForgetPasswordPage({Key? key}) : super(key: key);
 
   @override
   State<ForgetPasswordPage> createState() => _ForgetPasswordPageState();
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
- final _email = TextEditingController();
- @override
- void dispose() {
-   _email.dispose();
-   super.dispose();
- }
+  final _email = TextEditingController();
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
 //  Future PasswordReset() async{
 // try{
 //   await FirebaseAuth.instance.sendPasswordResetEmail(
@@ -36,55 +38,79 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 //   });
 // }
 //  }
- @override
+  @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar:AppBar(
-        title: Text('𝑹𝒆𝒔𝒆𝒕 𝑷𝒂𝒔𝒔𝒘𝒐𝒓𝒅 𝑺𝒄𝒓𝒆𝒆𝒏'),
-        backgroundColor: Colors.deepPurpleAccent,
-        elevation: 19,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(47),
-            bottomRight: Radius.circular(47),
-          )
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            SizedBox(
+              width: 30,
+            ),
+            Text(
+              'Reset Password Screen',
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
+        backgroundColor: Colors.deepPurpleAccent,
       ),
-
       body: Column(
         children: [
-          SizedBox(height: 47,),
-          Text('𝓟𝓵𝓮𝓪𝓼𝓮 𝓮𝓷𝓽𝓮𝓻 𝔂𝓸𝓾𝓻 𝓮𝓶𝓪𝓲𝓵 𝓲𝓷 𝓸𝓻𝓭𝓮𝓻 𝓽𝓸 𝓰𝓮𝓽 𝓻𝓮𝓼𝓮𝓽 𝓹𝓪𝓼𝓼𝔀𝓸𝓻𝓭 𝓵𝓲𝓷𝓴 𝓯𝓻𝓸𝓶 𝔂𝓸𝓾𝓻 𝓯𝓲𝓻𝓮𝓫𝓪𝓼𝓮 𝓪𝓬𝓬𝓸𝓾𝓷𝓽??'
-            ,textAlign: TextAlign.center,
-            style:TextStyle(fontWeight: FontWeight.w400, fontSize: 19,) ,),
-          SizedBox(height: 47,),
+          SizedBox(
+            height: 47,
+          ),
+          Text(
+            'Please enter your email here .',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 19,
+            ),
+          ),
+          SizedBox(
+            height: 47,
+          ),
           Padding(
-            padding: const EdgeInsets.only(left: 30,right: 30,),
+            padding: const EdgeInsets.only(
+              left: 30,
+              right: 30,
+            ),
             child: TextField(
               controller: _email,
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
-              decoration:  InputDecoration(
-
-                prefixIcon: Icon(Icons.email, color: Colors.blue,),
-                filled: true,
-                fillColor: Color(0xFF8317d7),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 4,color: Colors.white,),
-                    borderRadius: BorderRadius.all(Radius.circular(5))
+              decoration:const  InputDecoration(
+                prefixIcon:Icon(
+                  Icons.email,
+                  color: Colors.blue,
                 ),
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 4,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
                 hintText: 'Enter your Email Here',
-                hintStyle: const TextStyle(color: Colors.white),
+                hintStyle: const TextStyle(color: Colors.deepPurpleAccent),
               ),
             ),
           ),
-          SizedBox(height: 12,),
+         const  SizedBox(
+            height: 12,
+          ),
           MaterialButton(
-            onPressed: (){},
-            child: Text('𝑹𝒆𝒔𝒆𝒕 𝑷𝒂𝒔𝒔𝒘𝒐𝒓𝒅',style: TextStyle(color: Colors.white,),),
+            onPressed: () {},
+            child: Text(
+              '𝑹𝒆𝒔𝒆𝒕 𝑷𝒂𝒔𝒔𝒘𝒐𝒓𝒅',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             color: Colors.deepPurple,
-           )
+          )
         ],
       ),
     );
