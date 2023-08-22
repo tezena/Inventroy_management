@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Info extends StatefulWidget {
-  const Info({super.key});
+  final String text1;
+  final String text2;
+
+  Info(this.text1, this.text2, {Key? key}) : super(key: key);
+
   @override
   State<Info> createState() => _InfoState();
 }
@@ -9,7 +13,7 @@ class Info extends StatefulWidget {
 class _InfoState extends State<Info> {
   @override
   Widget build(context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(left: 20, right: 15),
       child: (Column(
         children: [
@@ -17,7 +21,7 @@ class _InfoState extends State<Info> {
             height: 15,
           ),
           Text(
-            "200",
+            widget.text1,
             style: TextStyle(
                 color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
           ),
@@ -25,7 +29,7 @@ class _InfoState extends State<Info> {
             height: 10,
           ),
           Text(
-            "Totall",
+            widget.text2,
             style: TextStyle(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
           )
@@ -52,10 +56,12 @@ class Vdivider extends StatelessWidget {
 }
 
 class HeroSec extends StatelessWidget {
-  const HeroSec({super.key});
+  final String day;
+  final String date;
+  const HeroSec(this.day,this.date,{super.key});
   @override
   Widget build(context) {
-    return const Center(
+    return Center(
         child: Padding(
       padding: EdgeInsets.all(15.0),
       child: Column(
@@ -64,7 +70,7 @@ class HeroSec extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Today",
+                day,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -73,7 +79,7 @@ class HeroSec extends StatelessWidget {
               SizedBox(
                 width: 15,
               ),
-              Text("Aug 10",
+              Text(date,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -84,15 +90,15 @@ class HeroSec extends StatelessWidget {
             height: 10,
           ),
           Row(
-            children: <Widget>[
+            children: [
               SizedBox(
-                width: 20,
+                width: 5,
               ),
-              Info(),
+              Info("200", "Total"),
               Vdivider(),
-              Info(),
+              Info("50", "Stock In"),
               Vdivider(),
-              Info()
+              Info("110", "Stock Out")
             ],
           )
         ],

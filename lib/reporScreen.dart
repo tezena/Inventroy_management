@@ -124,11 +124,11 @@ class ReportPage extends StatelessWidget {
       child: Container(
         width: 400.0, // Adjust the width to your preference
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding:const  EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+             const  Text(
                 'Top selling Products',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
@@ -155,7 +155,7 @@ class ReportPage extends StatelessWidget {
                                   fit: BoxFit.fill,
                                 ),
                               )),
-                          SizedBox(height: 4.0),
+                         const  SizedBox(height: 4.0),
                           Text('Sold: ${product.quantity}'),
                         ],
                       ),

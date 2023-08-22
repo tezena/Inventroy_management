@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Add a delay and navigate to the register page
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 5), () {
       GoRouter.of(context).go('/login');
     });
   }
@@ -67,7 +67,24 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(), // Show a loading indicator or logo
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Welcome to your solution!",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+            Stack(
+              children: [
+                Image.asset("assets/images/splesh.png"),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * .2,
+                  left: MediaQuery.of(context).size.width * .45,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              ],
+            ),
+          ],
+        ), // Show a loading indicator or logo
       ),
     );
   }

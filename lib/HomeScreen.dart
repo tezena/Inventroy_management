@@ -155,7 +155,7 @@ class _MySliderState extends State<MySlider> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225, 1),
         ),
-        child: const HeroSec(),
+        child: HeroSec("Today", "Aug 22"),
       ),
       Container(
         width: MediaQuery.of(context).size.width,
@@ -164,9 +164,8 @@ class _MySliderState extends State<MySlider> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225, 1),
         ),
-        child: const HeroSec(),
+        child: HeroSec("Yesterday", "Aug 21"),
       ),
-      // Add more widgets here
     ];
 
     return Padding(

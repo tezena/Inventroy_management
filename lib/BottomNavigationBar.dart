@@ -4,6 +4,7 @@ import 'package:inventory/ItemsList.dart';
 import 'package:go_router/go_router.dart';
 import 'package:inventory/AddItemScreen.dart';
 import 'package:inventory/NotificationScreen.dart';
+import 'package:inventory/main.dart';
 import 'package:inventory/profileScreen.dart';
 import "package:inventory/EditScreen.dart";
 import "package:inventory/DeleteScreen.dart";
