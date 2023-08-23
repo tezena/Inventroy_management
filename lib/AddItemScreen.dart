@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:inventory/models/products.dart';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Product {
-  String name;
-  int quantity;
-  double price;
-  String distributor;
-  String category;
-  String imageUrl;
+// class AddProductForm extends StatefulWidget {
+//   @override
+//   _AddProductFormState createState() => _AddProductFormState();
+// }
 
-  Product({
-    required this.name,
-    required this.quantity,
-    required this.price,
-    required this.distributor,
-    required this.category,
-    required this.imageUrl,
-  });
-}
+// class _AddProductFormState extends State<AddProductForm> {
+//   final _formKey = GlobalKey<FormState>();
+//   final _nameController = TextEditingController();
+//   final _quantityController = TextEditingController();
+//   final _priceController = TextEditingController();
+//   final _distributorController = TextEditingController();
+//   final _categoryController = TextEditingController();
+//   late File _pickedImage; // Use File for selected image
 
+//   late ImagePicker _imagePicker;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _imagePicker = ImagePicker();
+//     _pickedImage = File(''); // Initialize with an empty File
+//   }
+
+  
 class AddProductForm extends StatefulWidget {
   @override
   _AddProductFormState createState() => _AddProductFormState();
@@ -35,14 +44,15 @@ class _AddProductFormState extends State<AddProductForm> {
   late File _pickedImage; // Use File for selected image
 
   late ImagePicker _imagePicker;
+  late FirebaseFirestore _firestore;
 
   @override
   void initState() {
     super.initState();
     _imagePicker = ImagePicker();
-    _pickedImage = File(''); // Initialize with an empty File
+    _pickedImage = File('');
+    _firestore = FirebaseFirestore.instance;
   }
-
   Future<void> _pickImage() async {
     final pickedImage =
         await _imagePicker.pickImage(source: ImageSource.gallery);
@@ -51,6 +61,27 @@ class _AddProductFormState extends State<AddProductForm> {
       setState(() {
         _pickedImage = File(pickedImage.path);
       });
+    }
+  }
+
+  Future<void> _addProductToFirestore(Product newProduct) async {
+    try {
+      await _firestore.collection('products').add({
+        'name': newProduct.name,
+        'quantity': newProduct.quantity,
+        'price': newProduct.price,
+        'distributor': newProduct.distributor,
+        'category': newProduct.category,
+        'imageUrl': newProduct.imageUrl,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Product added to Firestore')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding product: $e')),
+      );
     }
   }
 

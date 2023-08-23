@@ -10,9 +10,17 @@ import "package:inventory/DeleteScreen.dart";
 import 'package:inventory/LoginScreen.dart';
 import 'package:inventory/BottomNavigationBar.dart';
 import 'package:inventory/register.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Required for Firebase.initializeApp()
+  
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(MyApp()); // Replace MyApp with your app's widget
 }
 
 class MyApp extends StatelessWidget {

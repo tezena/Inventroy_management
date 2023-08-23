@@ -44,39 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDGkRLHJG51AD0JGGKYcCXqb3svAg8qZbw',
-    appId: '1:528136352123:web:9c54757307b7589c5ecdde',
-    messagingSenderId: '528136352123',
-    projectId: 'temmw-inventory',
-    authDomain: 'temmw-inventory.firebaseapp.com',
-    storageBucket: 'temmw-inventory.appspot.com',
+    apiKey: 'AIzaSyCOlyEtinBp0Rjmcs4osrrGdaXbmmIf3bk',
+    appId: '1:82436170302:web:4c1a7a32c2caa1f261676f',
+    messagingSenderId: '82436170302',
+    projectId: 'dan-energy-inventory-app',
+    authDomain: 'dan-energy-inventory-app.firebaseapp.com',
+    storageBucket: 'dan-energy-inventory-app.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDJgA_MfH07O53j6-hnpPpgyqVHOxUMBL0',
-    appId: '1:528136352123:android:f5decb2884d486385ecdde',
-    messagingSenderId: '528136352123',
-    projectId: 'temmw-inventory',
-    storageBucket: 'temmw-inventory.appspot.com',
+    apiKey: 'AIzaSyC3nFpbqJrndvsUPoEJ_Zzp4qKQT9xSV1E',
+    appId: '1:82436170302:android:baccf298b0d2017761676f',
+    messagingSenderId: '82436170302',
+    projectId: 'dan-energy-inventory-app',
+    storageBucket: 'dan-energy-inventory-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBuGXl3OICOIl7HBzadmRLEyN6U03qoR3Q',
-    appId: '1:528136352123:ios:130ec7478e2140725ecdde',
-    messagingSenderId: '528136352123',
-    projectId: 'temmw-inventory',
-    storageBucket: 'temmw-inventory.appspot.com',
-    iosClientId: '528136352123-66bei2cb1pgle9blf3tnk5hhkntq0gg2.apps.googleusercontent.com',
+    apiKey: 'AIzaSyB7FuW9UOqzKTwXVrm8qtqaqjcMRAVkx6M',
+    appId: '1:82436170302:ios:2e61b7ce34dc3c0d61676f',
+    messagingSenderId: '82436170302',
+    projectId: 'dan-energy-inventory-app',
+    storageBucket: 'dan-energy-inventory-app.appspot.com',
+    iosClientId: '82436170302-shahh6k3kni3eom4kft8nkfavqkm0645.apps.googleusercontent.com',
     iosBundleId: 'com.example.inventory',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBuGXl3OICOIl7HBzadmRLEyN6U03qoR3Q',
-    appId: '1:528136352123:ios:c49967f61deb8e015ecdde',
-    messagingSenderId: '528136352123',
-    projectId: 'temmw-inventory',
-    storageBucket: 'temmw-inventory.appspot.com',
-    iosClientId: '528136352123-uu9mnk3u6q6500qg6dsphc95qi0nhcms.apps.googleusercontent.com',
+    apiKey: 'AIzaSyB7FuW9UOqzKTwXVrm8qtqaqjcMRAVkx6M',
+    appId: '1:82436170302:ios:c132d0b12014b0f461676f',
+    messagingSenderId: '82436170302',
+    projectId: 'dan-energy-inventory-app',
+    storageBucket: 'dan-energy-inventory-app.appspot.com',
+    iosClientId: '82436170302-vcf2s41itf3kc80l6agp7tjvo4phtspj.apps.googleusercontent.com',
     iosBundleId: 'com.example.inventory.RunnerTests',
   );
 }
