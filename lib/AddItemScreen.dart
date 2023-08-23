@@ -72,7 +72,11 @@ class _AddProductFormState extends State<AddProductForm> {
           FirebaseStorage.instance.ref().child('product_images/$fileName.jpg');
       final UploadTask uploadTask = storageReference.putFile(_pickedImage);
 
-      final TaskSnapshot taskSnapshot = await uploadTask;
+      // final TaskSnapshot taskSnapshot = await uploadTask;
+      // final String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      final TaskSnapshot taskSnapshot =
+          await uploadTask.whenComplete(() => null);
+
       final String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
       await FirebaseFirestore.instance.collection('products').add({
@@ -88,6 +92,7 @@ class _AddProductFormState extends State<AddProductForm> {
         SnackBar(content: Text('Product added to Firestore')),
       );
     } catch (e) {
+      print('Error adding product: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error adding product: $e')),
       );

@@ -22,17 +22,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
   }
 }
 
-class ItemModel {
-  ItemModel({
-    required this.image,
-    required this.name,
-    required this.quantity,
-  });
 
-  String image;
-  String name;
-  String quantity;
-}
 
 class ItemsList extends StatefulWidget {
   const ItemsList({Key? key}) : super(key: key);
@@ -42,9 +32,6 @@ class ItemsList extends StatefulWidget {
 }
 
 class ItemsListState extends State<ItemsList> {
-  // List<CategoryModel> categoriesList = [];
-  // List<ProductModel> productModelList = [];
-
   final FirestoreService _firestoreService = FirestoreService();
 
   List<Product> _products = [];
@@ -56,11 +43,16 @@ class ItemsListState extends State<ItemsList> {
   }
 
   Future<void> _fetchProducts() async {
-    List<Product> products = await _firestoreService.getProducts();
-    setState(() {
-      _products = products;
-      
-    });
+    print("fetching..");
+    try {
+      List<Product> products = await _firestoreService.getProducts();
+      print("Fetched products: $products");
+      setState(() {
+        _products = products;
+      });
+    } catch (e) {
+      print("Error fetching products: $e");
+    }
   }
 
   bool isLoading = false;
@@ -137,3 +129,4 @@ class ItemsListState extends State<ItemsList> {
     );
   }
 }
+

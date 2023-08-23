@@ -24,7 +24,6 @@ class FirestoreService {
           imageUrl: data['imageUrl'],
         );
       }).toList();
-
       return products;
     } catch (e) {
       print('Error fetching products: $e');
