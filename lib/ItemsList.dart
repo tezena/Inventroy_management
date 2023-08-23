@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import "package:inventory/ItemsCard.dart";
 import 'package:go_router/go_router.dart';
+import 'package:inventory/models/products.dart';
+import 'package:inventory/Services/database.dart';
 
-class ItemsScreen extends StatelessWidget {
+class ItemsScreen extends StatefulWidget {
   const ItemsScreen({super.key});
 
+  @override
+  State<ItemsScreen> createState() => _ItemsScreenState();
+}
+
+class _ItemsScreenState extends State<ItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -37,25 +44,24 @@ class ItemsList extends StatefulWidget {
 class ItemsListState extends State<ItemsList> {
   // List<CategoryModel> categoriesList = [];
   // List<ProductModel> productModelList = [];
-  List productModelList = [
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(
-        image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234"),
-    ItemModel(image: 'assets/images/shoe1.jpg', name: "lorem", quantity: "1234")
-  ];
+
+  final FirestoreService _firestoreService = FirestoreService();
+
+  List<Product> _products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProducts();
+  }
+
+  Future<void> _fetchProducts() async {
+    List<Product> products = await _firestoreService.getProducts();
+    setState(() {
+      _products = products;
+      
+    });
+  }
 
   bool isLoading = false;
   @override
@@ -69,7 +75,7 @@ class ItemsListState extends State<ItemsList> {
             SizedBox(
               width: MediaQuery.of(context).size.width * .35,
             ),
-          const   Text(
+            const Text(
               "All Items",
               textAlign: TextAlign.center,
             ),
@@ -94,7 +100,7 @@ class ItemsListState extends State<ItemsList> {
                   const SizedBox(
                     height: 12,
                   ),
-                  productModelList.isEmpty
+                  _products.isEmpty
                       ? const Center(
                           child: Text(" product is Empty"),
                         )
@@ -106,7 +112,7 @@ class ItemsListState extends State<ItemsList> {
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               primary: false,
-                              itemCount: productModelList.length,
+                              itemCount: _products.length,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -114,12 +120,11 @@ class ItemsListState extends State<ItemsList> {
                                       crossAxisSpacing: 5,
                                       childAspectRatio: 0.9),
                               itemBuilder: (ctx, index) {
-                                ItemModel singleProduct =
-                                    productModelList[index];
+                                Product singleProduct = _products[index];
                                 return ItmeCard(
-                                    imagePath: singleProduct.image,
+                                    imagePath: singleProduct.imageUrl,
                                     name: singleProduct.name,
-                                    price: singleProduct.quantity,
+                                    price: singleProduct.price,
                                     quntity: singleProduct.quantity);
                               }),
                         ),

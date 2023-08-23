@@ -4,6 +4,7 @@ import 'package:inventory/models/products.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // class AddProductForm extends StatefulWidget {
 //   @override
@@ -28,7 +29,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //     _pickedImage = File(''); // Initialize with an empty File
 //   }
 
-  
 class AddProductForm extends StatefulWidget {
   @override
   _AddProductFormState createState() => _AddProductFormState();
@@ -53,6 +53,7 @@ class _AddProductFormState extends State<AddProductForm> {
     _pickedImage = File('');
     _firestore = FirebaseFirestore.instance;
   }
+
   Future<void> _pickImage() async {
     final pickedImage =
         await _imagePicker.pickImage(source: ImageSource.gallery);
@@ -66,13 +67,21 @@ class _AddProductFormState extends State<AddProductForm> {
 
   Future<void> _addProductToFirestore(Product newProduct) async {
     try {
-      await _firestore.collection('products').add({
+      final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      final Reference storageReference =
+          FirebaseStorage.instance.ref().child('product_images/$fileName.jpg');
+      final UploadTask uploadTask = storageReference.putFile(_pickedImage);
+
+      final TaskSnapshot taskSnapshot = await uploadTask;
+      final String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('products').add({
         'name': newProduct.name,
         'quantity': newProduct.quantity,
         'price': newProduct.price,
         'distributor': newProduct.distributor,
         'category': newProduct.category,
-        'imageUrl': newProduct.imageUrl,
+        'imageUrl': imageUrl, // Store the image URL
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -244,9 +253,7 @@ class _AddProductFormState extends State<AddProductForm> {
                       imageUrl: _pickedImage.path, // Use _pickedImage path
                     );
 
-                    // TODO: Add the product to your inventory or database
-                    // You can replace the TODO with your own logic.
-
+                    _addProductToFirestore(newProduct);
                     _nameController.clear();
                     _quantityController.clear();
                     _priceController.clear();

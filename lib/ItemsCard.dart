@@ -5,8 +5,8 @@ import 'package:inventory/productDetail.dart';
 class ItmeCard extends StatelessWidget {
   final String imagePath;
   final String name;
-  final String price;
-  final String quntity;
+  final num price;
+  final num quntity;
   final bool isTrue;
 
   const ItmeCard({
@@ -62,7 +62,7 @@ class ItmeCard extends StatelessWidget {
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
-                      child: Image.asset(
+                      child: Image.network(
                         imagePath,
                         fit: BoxFit.cover,
                       ),
