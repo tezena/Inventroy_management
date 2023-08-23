@@ -69,7 +69,7 @@ class ItemsListState extends State<ItemsList> {
             SizedBox(
               width: MediaQuery.of(context).size.width * .35,
             ),
-            Text(
+          const   Text(
               "All Items",
               textAlign: TextAlign.center,
             ),

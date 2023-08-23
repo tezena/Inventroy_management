@@ -26,14 +26,14 @@ class HomeScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * .8,
                 ),
                 IconButton(
-                    padding: EdgeInsets.only(bottom: 5),
+                    padding: const EdgeInsets.only(bottom: 5),
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => NotificationPage()));
                     },
-                    icon: Icon(
+                    icon:const  Icon(
                       Icons.notifications_none_outlined,
                       size: 30,
                     ))
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
               height: 50,
               width: MediaQuery.of(context).size.width * 0.82,
               child: TextFormField(
-                cursorColor: Color.fromRGBO(107, 59, 225, 1),
+                cursorColor:const Color.fromRGBO(107, 59, 225, 1),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   hintText: "Search...",
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Color.fromRGBO(107, 59, 225, 1), width: 4)),
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     color: Colors.grey,
                   ),
                 ),
@@ -155,7 +155,7 @@ class _MySliderState extends State<MySlider> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225, 1),
         ),
-        child: HeroSec("Today", "Aug 22"),
+        child:const  HeroSec("Today", "Aug 22"),
       ),
       Container(
         width: MediaQuery.of(context).size.width,
@@ -164,7 +164,7 @@ class _MySliderState extends State<MySlider> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225, 1),
         ),
-        child: HeroSec("Yesterday", "Aug 21"),
+        child:const  HeroSec("Yesterday", "Aug 21"),
       ),
     ];
 

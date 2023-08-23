@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Add a delay and navigate to the register page
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       GoRouter.of(context).go('/login');
     });
   }
@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Welcome to your solution!",
+            const Text("Welcome to your solution!",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
             Stack(
               children: [
@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Positioned(
                   top: MediaQuery.of(context).size.height * .2,
                   left: MediaQuery.of(context).size.width * .45,
-                  child: Center(child: CircularProgressIndicator()),
+                  child: const Center(child: CircularProgressIndicator()),
                 )
               ],
             ),
@@ -96,14 +96,14 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             GoRouter.of(context).go('/login');
           },
-          child: Text("login"),
+          child: const Text("login"),
         ),
       ),
     );
@@ -116,14 +116,14 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             GoRouter.of(context).go('/home');
           },
-          child: Text("home"),
+          child: const Text("home"),
         ),
       ),
     );
