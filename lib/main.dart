@@ -30,12 +30,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Inventory',
       routerConfig: _router,
+     
     );
   }
 
   final _router = GoRouter(
     initialLocation: '/splash',
     routes: [
+      
       GoRoute(
         path: '/splash',
         builder: (context, state) => SplashScreen(),
@@ -53,6 +55,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => BottomNavigationScreen(),
       ),
     ],
+ 
   );
 }
 

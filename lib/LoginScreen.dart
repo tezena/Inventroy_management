@@ -9,10 +9,9 @@ import 'dart:developer' as devtools show log;
 import "package:inventory/forgetpassword.dart";
 import 'package:inventory/BottomNavigationBar.dart';
 import 'package:inventory/showDialog.dart';
+import 'package:go_router/go_router.dart';
 
 import 'register.dart';
-
-
 
 // import 'Forget_Password_Page.dart';
 
@@ -187,13 +186,7 @@ class _LoginViewState extends State<LoginView> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         )),
-                    onPressed: () 
-                    //   Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) => BottomNavigationScreen()));
-                    // },
-                    async {
+                    onPressed: () async {
                       final email = _email.text;
                       final password = _password.text;
                       try {
@@ -201,24 +194,20 @@ class _LoginViewState extends State<LoginView> {
                             email: email, password: password);
                         final user = FirebaseAuth.instance.currentUser;
                         if (user?.emailVerified ?? false) {
-                          Navigator.push(
-                           context,
-                          MaterialPageRoute(
-                              builder: (context) => BottomNavigationScreen()));
+                          // Navigator.of(context).pushNamedAndRemoveUntil(
+                          //   '/home',
+                          //   (route) => false,
+                          // );
+                          GoRouter.of(context).go('/home');
                         } else {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/VerifyEmailView/',
-                            (route) => false,
-                          );
+                          GoRouter.of(context).go('/home');
                         }
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/Home/',
-                          (route) => false,
-                        );
                       } on FirebaseAuthException catch (e) {
-                        if (e.code == 'USER-NOT-FOUND') {
+                        print("*********** ${e.code}");
+                        if (e.code == 'user-not-found') {
                           await showErrorDialog(context, 'User Not Found');
                         } else if (e.code == 'wrong-password') {
+                          print("********* ${e.code}");
                           await showErrorDialog(
                               context, 'Wrong password Entered');
                         }
