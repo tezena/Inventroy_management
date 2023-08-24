@@ -1,10 +1,12 @@
 class Product {
   final String name;
+  final String pid;
   final int quantity;
   final double price;
   final String distributor;
   final String category;
   final String imageUrl;
+  final String expiredate;
 
   Product({
     required this.name,
@@ -13,5 +15,7 @@ class Product {
     required this.distributor,
     required this.category,
     required this.imageUrl,
+    required this.pid,
+    required this.expiredate,
   });
 }

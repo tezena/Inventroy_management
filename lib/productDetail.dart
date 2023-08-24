@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import "package:inventory/EditScreen.dart";
+import 'package:inventory/models/products.dart';
+import 'package:inventory/Services/database.dart';
+import 'package:inventory/models/products.dart' as pmodel;
 
 class ProductDetailPage extends StatelessWidget {
-  final String productName;
-  final String productImageUrl;
-  final double stockInAmount;
-  final double stockOutAmount;
-  final double runningOutAmount;
-  final double productPrice;
-  final String expiryDate;
-  final String supplier;
-  final int availableUnits;
+  final FirestoreService _firestoreService = FirestoreService();
+  final pmodel.Product cuproduct;
 
-  ProductDetailPage({
-    required this.productName,
-    required this.productImageUrl,
-    required this.stockInAmount,
-    required this.stockOutAmount,
-    required this.runningOutAmount,
-    required this.productPrice,
-    required this.expiryDate,
-    required this.supplier,
-    required this.availableUnits,
-  });
+  ProductDetailPage(this.cuproduct, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +19,9 @@ class ProductDetailPage extends StatelessWidget {
         domainFn: (StockData series, _) => series.label,
         measureFn: (StockData series, _) => series.value,
         data: [
-          StockData('Stock In', stockInAmount, Colors.green),
-          StockData('Stock Out', stockOutAmount, Colors.red),
-          StockData('Running Out', runningOutAmount, Colors.yellow),
+          StockData('Stock In', 123, Colors.green),
+          StockData('Stock Out', 567, Colors.red),
+          StockData('Running Out', 45678, Colors.yellow),
         ],
         colorFn: (StockData series, _) =>
             charts.ColorUtil.fromDartColor(series.color),
@@ -70,8 +56,8 @@ class ProductDetailPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * .9,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: Image.asset(
-                    productImageUrl,
+                  child: Image.network(
+                    cuproduct.imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -82,7 +68,7 @@ class ProductDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  productName,
+                  cuproduct.name,
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
@@ -90,7 +76,7 @@ class ProductDetailPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditScreen(),
+                                builder: (context) => EditScreen(cuproduct.pid),
                               ))
                         },
                     icon: Icon(
@@ -145,20 +131,20 @@ class ProductDetailPage extends StatelessWidget {
             SizedBox(height: 16.0),
             SizedBox(height: 16.0),
             Text(
-              'Price: \$${productPrice.toStringAsFixed(2)}',
+              'Price: \$ ${cuproduct.price.toStringAsFixed(2)}',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 10.0),
-            Text('Expiry Date: $expiryDate',
+            Text('Expiry Date: ${cuproduct.expiredate}',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Colors.red)),
             SizedBox(height: 10.0),
-            Text('Supplier: $supplier',
+            Text('Supplier: ${cuproduct.distributor}',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
             SizedBox(height: 10.0),
-            Text('Available Units: $availableUnits',
+            Text('Available Units: ${cuproduct.quantity}',
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,

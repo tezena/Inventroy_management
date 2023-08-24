@@ -41,6 +41,8 @@ class _AddProductFormState extends State<AddProductForm> {
   final _priceController = TextEditingController();
   final _distributorController = TextEditingController();
   final _categoryController = TextEditingController();
+  final _pidController = TextEditingController();
+  final _expiredateController = TextEditingController();
   late File _pickedImage; // Use File for selected image
 
   late ImagePicker _imagePicker;
@@ -81,10 +83,12 @@ class _AddProductFormState extends State<AddProductForm> {
 
       await FirebaseFirestore.instance.collection('products').add({
         'name': newProduct.name,
+        'pid': newProduct.pid,
         'quantity': newProduct.quantity,
         'price': newProduct.price,
         'distributor': newProduct.distributor,
         'category': newProduct.category,
+        'expiredate': newProduct.expiredate,
         'imageUrl': imageUrl, // Store the image URL
       });
 
@@ -139,154 +143,200 @@ class _AddProductFormState extends State<AddProductForm> {
                 ),
               ),
               const SizedBox(height: 30.0),
-              TextFormField(
-                controller: _nameController,
-                cursorColor: Color.fromRGBO(107, 59, 225, 1),
-                decoration: const InputDecoration(
-                    labelText: "Name",
-                    labelStyle:
-                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(107, 59, 225, 1)))),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _quantityController,
-                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
-                decoration: const InputDecoration(
-                    labelText: "Quantity",
-                    labelStyle:
-                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(107, 59, 225, 1)))),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a quantity';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _priceController,
-                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
-                decoration: const InputDecoration(
-                    labelText: "Price",
-                    labelStyle:
-                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(107, 59, 225, 1)))),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a price';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _distributorController,
-                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
-                decoration: const InputDecoration(
-                    labelText: "Distributer",
-                    labelStyle:
-                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(107, 59, 225, 1)))),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a distributor';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                controller: _categoryController,
-                cursorColor: const Color.fromRGBO(107, 59, 225, 1),
-                decoration: const InputDecoration(
-                    labelText: "Category",
-                    labelStyle:
-                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromRGBO(107, 59, 225, 1)))),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a category';
-                  }
-                  return null;
-                },
-              ),
+              SingleChildScrollView(
+                  child: Column(children: [
+                TextFormField(
+                  controller: _nameController,
+                  cursorColor: Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Name",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _pidController,
+                  cursorColor: Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Product Id",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter product Id';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _expiredateController,
+                  cursorColor: Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Expire Date",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter expire date';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _quantityController,
+                  cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Quantity",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a quantity';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _priceController,
+                  cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Price",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a price';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _distributorController,
+                  cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Distributer",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a distributor';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _categoryController,
+                  cursorColor: const Color.fromRGBO(107, 59, 225, 1),
+                  decoration: const InputDecoration(
+                      labelText: "Category",
+                      labelStyle:
+                          TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(107, 59, 225, 1)))),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a category';
+                    }
+                    return null;
+                  },
+                ),
+              ])),
               SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Product newProduct = Product(
-                      name: _nameController.text,
-                      quantity: int.parse(_quantityController.text),
-                      price: double.parse(_priceController.text),
-                      distributor: _distributorController.text,
-                      category: _categoryController.text,
-                      imageUrl: _pickedImage.path, // Use _pickedImage path
-                    );
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Product newProduct = Product(
+                        name: _nameController.text,
+                        pid: _pidController.text,
+                        quantity: int.parse(_quantityController.text),
+                        price: double.parse(_priceController.text),
+                        distributor: _distributorController.text,
+                        category: _categoryController.text,
+                        expiredate: _expiredateController.text,
+                        imageUrl: _pickedImage.path, // Use _pickedImage path
+                      );
 
-                    _addProductToFirestore(newProduct);
-                    _nameController.clear();
-                    _quantityController.clear();
-                    _priceController.clear();
-                    _distributorController.clear();
-                    _categoryController.clear();
-                    setState(() {
-                      _pickedImage = File(''); // Clear the picked image
-                    });
+                      _addProductToFirestore(newProduct);
+                      _nameController.clear();
+                      _quantityController.clear();
+                      _priceController.clear();
+                      _distributorController.clear();
+                      _categoryController.clear();
+                      setState(() {
+                        _pickedImage = File(''); // Clear the picked image
+                      });
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Product added successfully'),
-                      ),
-                    );
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromRGBO(107, 59, 225, 1)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    'Add',
-                    style: TextStyle(fontSize: 20),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Product added successfully'),
+                        ),
+                      );
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(107, 59, 225, 1)),
                   ),
-                ),
-              ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      'Add',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  )),
             ],
           ),
         ),

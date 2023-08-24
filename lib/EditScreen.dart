@@ -9,6 +9,7 @@ class Product {
   String distributor;
   String category;
   String imageUrl;
+  String pid;
 
   Product({
     required this.name,
@@ -17,10 +18,13 @@ class Product {
     required this.distributor,
     required this.category,
     required this.imageUrl,
+    required this.pid
   });
 }
 
 class EditScreen extends StatefulWidget {
+  final String pid;
+   EditScreen(this.pid,{super.key});
   @override
   _EditScreenState createState() => _EditScreenState();
 }
@@ -215,7 +219,8 @@ class _EditScreenState extends State<EditScreen> {
                       price: double.parse(_priceController.text),
                       distributor: _distributorController.text,
                       category: _categoryController.text,
-                      imageUrl: _pickedImage.path, // Use _pickedImage path
+                      imageUrl: _pickedImage.path, 
+                      pid: "ertyu"// Use _pickedImage path
                     );
 
                     // TODO: Add the product to your inventory or database

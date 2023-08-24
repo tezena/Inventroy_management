@@ -114,10 +114,7 @@ class ItemsListState extends State<ItemsList> {
                               itemBuilder: (ctx, index) {
                                 Product singleProduct = _products[index];
                                 return ItmeCard(
-                                    imagePath: singleProduct.imageUrl,
-                                    name: singleProduct.name,
-                                    price: singleProduct.price,
-                                    quntity: singleProduct.quantity);
+                                    singleProduct);
                               }),
                         ),
                   const SizedBox(
