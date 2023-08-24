@@ -1,9 +1,10 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:inventory_app/firebase_options.dart';
+import 'package:inventory/firebase_options.dart';
 import 'dart:developer' as devtools show log;
+import 'package:inventory/showDialog.dart';
 
 import 'package:inventory/LoginScreen.dart';
 
@@ -19,6 +20,9 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+  final _name = TextEditingController();
+  final _uname = TextEditingController();
+  final _phone = TextEditingController();
 
   @override
   void initstate() {
@@ -81,7 +85,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     TextField(
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      controller: _password,
+                      controller: _name,
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
@@ -111,7 +115,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     TextField(
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      controller: _password,
+                      controller: _uname,
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
@@ -141,7 +145,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     TextField(
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      controller: _password,
+                      controller: _phone,
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
@@ -243,36 +247,37 @@ class _RegisterViewState extends State<RegisterView> {
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ))),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginView()));
+                        onPressed: ()
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) => LoginView()));
+                            // },
+                            async {
+                          final email = _email.text;
+                          final password = _password.text;
+                          try {
+                            await FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: email, password: password);
+                            final user = FirebaseAuth.instance.currentUser;
+                            user?.sendEmailVerification();
+                            Navigator.of(context)
+                                .pushNamed('/VerifyEmailView/');
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'Weak-Password') {
+                              showErrorDialog(context, 'Weak Password');
+                            } else if (e.code == 'email-already-in-use') {
+                              showErrorDialog(context, 'Email Already in Use');
+                            } else if (e.code == 'invalid-email') {
+                              showErrorDialog(context, 'Invalid Email Entered');
+                            } else {
+                              await showErrorDialog(context, 'Error ${e.code}');
+                            }
+                          } catch (e) {
+                            await showErrorDialog(context, e.toString());
+                          }
                         },
-                        //               async {
-                        //                 final email = _email.text;
-                        //                 final password = _password.text;
-                        //                 try {
-                        //                   await FirebaseAuth.instance
-                        //                       .createUserWithEmailAndPassword(
-                        //                       email: email, password: password);
-                        //                   final user=FirebaseAuth.instance.currentUser;
-                        //                   user?.sendEmailVerification();
-                        //                   Navigator.of(context).pushNamed('/VerifyEmailView/');
-                        //                 }on FirebaseAuthException catch(e){
-                        // if(e.code=='Weak-Password'){
-                        // showErrorDialog(context, 'Weak Password');
-                        // }else if (e.code == 'email-already-in-use'){
-                        // showErrorDialog(context, 'Email Already in Use');
-                        // }else if(e.code=='invalid-email') {
-                        // showErrorDialog(context, 'Invalid Email Entered');
-                        // } else {
-                        // await showErrorDialog(context,'Error ${e.code}' );
-                        // }
-                        // }catch(e){
-                        //               await showErrorDialog(context, e.toString())    ;
-                        //                 }
-                        //                 },
                         child: const Text('Register',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 22)),

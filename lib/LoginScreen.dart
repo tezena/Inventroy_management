@@ -1,16 +1,18 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:inventory_app/firebase_options.dart';
+import 'package:inventory/firebase_options.dart';
 import 'package:flutter/src/painting/border_radius.dart';
 import 'package:flutter/src/material/colors.dart';
 import 'package:flutter/src/widgets/text.dart';
 import 'dart:developer' as devtools show log;
 import "package:inventory/forgetpassword.dart";
 import 'package:inventory/BottomNavigationBar.dart';
+import 'package:inventory/showDialog.dart';
+
 import 'register.dart';
 
-// import 'package:inventory_app/utilities/Show_Error_Dialog.dart';
+
 
 // import 'Forget_Password_Page.dart';
 
@@ -185,43 +187,43 @@ class _LoginViewState extends State<LoginView> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         )),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
+                    onPressed: () 
+                    //   Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => BottomNavigationScreen()));
+                    // },
+                    async {
+                      final email = _email.text;
+                      final password = _password.text;
+                      try {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: email, password: password);
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user?.emailVerified ?? false) {
+                          Navigator.push(
+                           context,
                           MaterialPageRoute(
                               builder: (context) => BottomNavigationScreen()));
+                        } else {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/VerifyEmailView/',
+                            (route) => false,
+                          );
+                        }
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/Home/',
+                          (route) => false,
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'USER-NOT-FOUND') {
+                          await showErrorDialog(context, 'User Not Found');
+                        } else if (e.code == 'wrong-password') {
+                          await showErrorDialog(
+                              context, 'Wrong password Entered');
+                        }
+                      }
                     },
-                    // async {
-                    //   final email = _email.text;
-                    //   final password = _password.text;
-                    //   try {
-                    //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    //         email: email, password: password);
-                    //     final user = FirebaseAuth.instance.currentUser;
-                    //     if (user?.emailVerified ?? false) {
-                    //       Navigator.of(context).pushNamedAndRemoveUntil(
-                    //         '/Home/',
-                    //         (route) => false,
-                    //       );
-                    //     } else {
-                    //       Navigator.of(context).pushNamedAndRemoveUntil(
-                    //         '/VerifyEmailView/',
-                    //         (route) => false,
-                    //       );
-                    //     }
-                    //     Navigator.of(context).pushNamedAndRemoveUntil(
-                    //       '/Home/',
-                    //       (route) => false,
-                    //     );
-                    //   } on FirebaseAuthException catch (e) {
-                    //     if (e.code == 'USER-NOT-FOUND') {
-                    //       await showErrorDialog(context, 'User Not Found');
-                    //     } else if (e.code == 'wrong-password') {
-                    //       await showErrorDialog(
-                    //           context, 'Wrong password Entered');
-                    //     }
-                    //   }
-                    // },
                     child: const Text(
                       'Login',
                       style: TextStyle(
