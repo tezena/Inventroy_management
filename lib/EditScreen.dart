@@ -1,30 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
-class Product {
-  String name;
-  int quantity;
-  double price;
-  String distributor;
-  String category;
-  String imageUrl;
-  String pid;
-
-  Product({
-    required this.name,
-    required this.quantity,
-    required this.price,
-    required this.distributor,
-    required this.category,
-    required this.imageUrl,
-    required this.pid
-  });
-}
+import "package:inventory/models/products.dart";
+import "package:inventory/Services/database.dart";
+import 'package:firebase_storage/firebase_storage.dart';
 
 class EditScreen extends StatefulWidget {
   final String pid;
-   EditScreen(this.pid,{super.key});
+  EditScreen(this.pid, {super.key});
   @override
   _EditScreenState createState() => _EditScreenState();
 }
@@ -36,7 +19,10 @@ class _EditScreenState extends State<EditScreen> {
   final _priceController = TextEditingController();
   final _distributorController = TextEditingController();
   final _categoryController = TextEditingController();
+  final _pidController = TextEditingController();
+  final _expiredateController = TextEditingController();
   late File _pickedImage; // Use File for selected image
+  final FirestoreService _firestoreService = FirestoreService();
 
   late ImagePicker _imagePicker;
 
@@ -129,6 +115,48 @@ class _EditScreenState extends State<EditScreen> {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: _pidController,
+                cursorColor: Color.fromRGBO(107, 59, 225, 1),
+                decoration: const InputDecoration(
+                    labelText: "Product Id",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter product Id';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _expiredateController,
+                cursorColor: Color.fromRGBO(107, 59, 225, 1),
+                decoration: const InputDecoration(
+                    labelText: "Expire Date",
+                    labelStyle:
+                        TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromRGBO(107, 59, 225, 1)))),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter expire date';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
                 controller: _quantityController,
                 decoration: const InputDecoration(
                     labelText: "Quantity",
@@ -211,20 +239,51 @@ class _EditScreenState extends State<EditScreen> {
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    Product newProduct = Product(
-                      name: _nameController.text,
-                      quantity: int.parse(_quantityController.text),
-                      price: double.parse(_priceController.text),
-                      distributor: _distributorController.text,
-                      category: _categoryController.text,
-                      imageUrl: _pickedImage.path, 
-                      pid: "ertyu"// Use _pickedImage path
-                    );
+                    Map<String, dynamic> updatedProductData = {
+                      'name': _nameController.text,
+                      'quantity': int.parse(_quantityController.text),
+                      'price': double.parse(_priceController.text),
+                      'distributor': _distributorController.text,
+                      'category': _categoryController.text,
+                      'expiredate': _expiredateController.text,
+                      'pid': _pidController.text,
+                    };
 
-                    // TODO: Add the product to your inventory or database
-                    // You can replace the TODO with your own logic.
+                    // Upload the new image if selected
+                    if (_pickedImage.path.isNotEmpty) {
+                      final String fileName =
+                          DateTime.now().millisecondsSinceEpoch.toString();
+                      final Reference storageReference = FirebaseStorage
+                          .instance
+                          .ref()
+                          .child('product_images/$fileName.jpg');
+                      final UploadTask uploadTask =
+                          storageReference.putFile(_pickedImage);
+
+                      TaskSnapshot taskSnapshot = await uploadTask;
+                      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+                      updatedProductData['imageUrl'] =
+                          imageUrl; // Update the image URL
+                    }
+
+                    try {
+                      await _firestoreService.updateProduct(
+                          widget.pid, updatedProductData);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Product updated successfully'),
+                        ),
+                      );
+                    } catch (error) {
+                      print('Error updating product: $error');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error updating product'),
+                        ),
+                      );
+                    }
 
                     _nameController.clear();
                     _quantityController.clear();
@@ -234,17 +293,12 @@ class _EditScreenState extends State<EditScreen> {
                     setState(() {
                       _pickedImage = File(''); // Clear the picked image
                     });
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Product added successfully'),
-                      ),
-                    );
                   }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromRGBO(107, 59, 225, 1)),
+                    Color.fromRGBO(107, 59, 225, 1),
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
