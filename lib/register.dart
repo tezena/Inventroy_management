@@ -36,7 +36,7 @@ class _RegisterViewState extends State<RegisterView> {
         'name': newUser.name,
         'username': newUser.username,
         'phone': newUser.phone,
-        'imageUrl': '', // Add logic to handle profile image upload
+        'imageUrl': 'https://microbiology.ucr.edu/sites/default/files/styles/form_preview/public/blank-profile-pic.png?itok=4teBBoet', // Add logic to handle profile image upload
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

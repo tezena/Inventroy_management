@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventory/models/usermodel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import "package:inventory/Services/database.dart";
 
 class ProfileEditPage extends StatelessWidget {
   final myUser user;
@@ -42,13 +45,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final FirestoreService _firestoreService = FirestoreService();
+  late FirebaseFirestore _firestore;
 
   String _profileImageUrl = 'https://via.placeholder.com/150';
 
-  void _changeProfileImage() {
-    // Add logic to change the profile image
-    // For example, show an image picker dialog
-  }
   late File _pickedImage; // Use File for selected image
 
   late ImagePicker _imagePicker;
@@ -59,11 +60,11 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
     _imagePicker = ImagePicker();
     _pickedImage = File('');
     _initializeControllers();
+    _firestore = FirebaseFirestore.instance;
   }
 
   void _initializeControllers() {
     _fullNameController.text = widget.user.name;
-    _emailController.text = "ertyui";
     _phoneController.text = widget.user.phone;
     _usernameController.text = widget.user.username;
   }
@@ -122,20 +123,6 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                         BorderSide(color: Color.fromRGBO(107, 59, 225, 1)))),
           ),
           SizedBox(height: 8.0),
-          TextFormField(
-            controller: _emailController,
-            cursorColor: const Color.fromRGBO(107, 59, 225, 1),
-            decoration: const InputDecoration(
-                labelText: 'Email',
-                labelStyle: TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(107, 59, 225, 1)))),
-            keyboardType: TextInputType.emailAddress,
-          ),
           SizedBox(height: 8.0),
           TextFormField(
             controller: _phoneController,
@@ -166,29 +153,63 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
                         BorderSide(color: Color.fromRGBO(107, 59, 225, 1)))),
           ),
           SizedBox(height: 8.0),
-          TextFormField(
-            controller: _passwordController,
-            cursorColor: const Color.fromRGBO(107, 59, 225, 1),
-            decoration: const InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: Color.fromRGBO(107, 59, 225, 1)),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(107, 59, 225, 1))),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color.fromRGBO(107, 59, 225, 1)))),
-            obscureText: true,
-          ),
           SizedBox(height: 16.0),
           ElevatedButton(
             style: const ButtonStyle(
                 backgroundColor:
                     MaterialStatePropertyAll(Color.fromRGBO(107, 59, 225, 1))),
-            onPressed: () {
-              // Add logic to save profile changes
-              // You can access the edited values using the controllers
-              Navigator.pop(context);
+            onPressed: () async {
+              Map<String, dynamic> updateUserInfo = {};
+              if (_fullNameController != widget.user.name) {
+                updateUserInfo['name'] = _fullNameController.text;
+              }
+              if (_phoneController.text != widget.user.phone.toString()) {
+                updateUserInfo['phone'] = _phoneController.text;
+              }
+
+              if (_usernameController.text != widget.user.username) {
+                updateUserInfo['username'] = _usernameController.text;
+              }
+
+              // Upload the new image if selected
+              if (_pickedImage != null &&
+                  _pickedImage.existsSync() &&
+                  _pickedImage.path != widget.user.imageUrl) {
+                final String fileName =
+                    DateTime.now().millisecondsSinceEpoch.toString();
+                final Reference storageReference = FirebaseStorage.instance
+                    .ref()
+                    .child('Users_images/$fileName.jpg');
+                final UploadTask uploadTask =
+                    storageReference.putFile(_pickedImage);
+
+                TaskSnapshot taskSnapshot = await uploadTask;
+                String imageUrl = await taskSnapshot.ref.getDownloadURL();
+                updateUserInfo['imageUrl'] = imageUrl; // Update the image URL
+              }
+
+              try {
+                await _firestore
+                    .collection('users')
+                    .doc(widget.user.uid)
+                    .update(updateUserInfo);
+                await ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Product updated successfully'),
+                  ),
+                );
+                Navigator.pop(context, true);
+              } catch (error) {
+                print('Error updating User Info: $error');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error updating product'),
+                  ),
+                );
+              }
+              setState(() {
+                _pickedImage = File(''); // Clear the picked image
+              });
             },
             child: const Text('Save Changes'),
           ),
@@ -238,6 +259,19 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
   }
+  void _navigateToProfileEdit() async {
+  final shouldReload = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ProfileEditForm(),
+    ),
+  );
+
+  if (shouldReload == true) {
+    // Reload the page or perform any necessary action
+    _loadUserProfile(); // For example, call a function to reload user data
+  }
+}
 
   @override
   Widget build(BuildContext context) {
