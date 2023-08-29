@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inventory/models/usermodel.dart';
 
 class ProfileEditPage extends StatelessWidget {
+  final myUser user;
+  ProfileEditPage(this.user);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +22,16 @@ class ProfileEditPage extends StatelessWidget {
           ],
         ),
       ),
-      body: ProfileEditForm(),
+      body: ProfileEditForm(user: user),
     );
   }
 }
 
 class ProfileEditForm extends StatefulWidget {
+  final myUser user;
+
+  ProfileEditForm({required this.user});
+
   @override
   _ProfileEditFormState createState() => _ProfileEditFormState();
 }
@@ -48,7 +57,15 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   void initState() {
     super.initState();
     _imagePicker = ImagePicker();
-    _pickedImage = File(''); // Initialize with an empty File
+    _pickedImage = File('');
+    _initializeControllers();
+  }
+
+  void _initializeControllers() {
+    _fullNameController.text = widget.user.name;
+    _emailController.text = "ertyui";
+    _phoneController.text = widget.user.phone;
+    _usernameController.text = widget.user.username;
   }
 
   Future<void> _pickImage() async {
@@ -61,26 +78,6 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
       });
     }
   }
-
-  // InkWell(
-  //               onTap: _pickImage,
-  //               child: Container(
-  //                 alignment: Alignment.center,
-  //                 height: 150.0,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(
-  //                       color: const Color.fromRGBO(107, 59, 225, 1)),
-  //                   borderRadius: BorderRadius.circular(10),
-  //                 ),
-  //                 child: _pickedImage.path.isEmpty
-  //                     ? Icon(Icons.camera_alt,
-  //                         size: 60.0, color: Color.fromRGBO(107, 59, 225, 1))
-  //                     : Image.file(
-  //                         _pickedImage, // Use the File object here
-  //                         fit: BoxFit.cover,
-  //                       ),
-  //               ),
-  //             ),
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +198,47 @@ class _ProfileEditFormState extends State<ProfileEditForm> {
   }
 }
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  myUser? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    User? firebaseUser = _auth.currentUser;
+
+    if (firebaseUser != null) {
+      DocumentSnapshot userDataSnapshot =
+          await _firestore.collection('users').doc(firebaseUser.uid).get();
+      print('**** $firebaseUser');
+      if (userDataSnapshot.exists) {
+        setState(() {
+          _user = myUser(
+            uid: firebaseUser.uid,
+            name: userDataSnapshot['name'],
+            username: userDataSnapshot['username'],
+            phone: userDataSnapshot['phone'],
+            imageUrl: userDataSnapshot['imageUrl'],
+          );
+          print("########## fetching");
+        });
+      } else {
+        print("document not found ^^^^^*********");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,67 +247,39 @@ class ProfilePage extends StatelessWidget {
         title: Row(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width * .4,
+              width: MediaQuery.of(context).size.width * .32,
             ),
-            Text('Profile'),
+            Text('Profile page'),
           ],
         ),
-        automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Card(
-                child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Row(
+        child: _user != null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 30,
-                  ),
                   CircleAvatar(
-                      radius: 75,
-                      backgroundImage:
-                          NetworkImage('https://via.placeholder.com/150'),
-                      backgroundColor: Color.fromRGBO(107, 59, 225, 1)),
-                  SizedBox(
-                    width: 20,
+                    radius: 75,
+                    backgroundImage: NetworkImage(_user!.imageUrl),
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        'Full Name',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      SizedBox(height: 8.0),
-                      Text('Email Address'),
-                      SizedBox(height: 8.0),
-                      Text('Phone Number'),
-                      SizedBox(height: 8.0),
-                      Text('Username'),
-                    ],
+                  Text('Full Name: ${_user!.name}'),
+                  Text('Username: ${_user!.username}'),
+                  Text('Phone: ${_user!.phone}'),
+                  Text('Role: ${_user!.Role}'),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileEditPage(_user!),
+                        ),
+                      );
+                    },
+                    child: Text('Edit'),
                   ),
                 ],
-              ),
-            )),
-            const SizedBox(height: 16.0),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
-                      Color.fromRGBO(107, 59, 225, 1))),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileEditPage()),
-                );
-              },
-              child: Text('Edit'),
-            ),
-          ],
-        ),
+              )
+            : CircularProgressIndicator(),
       ),
     );
   }

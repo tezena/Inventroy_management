@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:inventory/firebase_options.dart';
 import 'dart:developer' as devtools show log;
 import 'package:inventory/showDialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:inventory/LoginScreen.dart';
+import 'package:inventory/models/usermodel.dart';
+import "package:inventory/Services/database.dart";
 
 // import 'package:inventory_app/utilities/Show_Error_Dialog.dart';
 
@@ -20,9 +23,32 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
-  final _name = TextEditingController();
-  final _uname = TextEditingController();
-  final _phone = TextEditingController();
+  final _nameController = TextEditingController();
+  final _unameController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _addUserToFirestore(myUser newUser) async {
+    try {
+      await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
+        'name': newUser.name,
+        'username': newUser.username,
+        'phone': newUser.phone,
+        'imageUrl': '', // Add logic to handle profile image upload
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User added to Firestore')),
+      );
+    } catch (e) {
+      print('Error adding users: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding user: $e')),
+      );
+    }
+  }
 
   @override
   void initstate() {
@@ -47,7 +73,7 @@ class _RegisterViewState extends State<RegisterView> {
           SizedBox(
             height: 40,
           ),
-          Row(
+          const Row(
             children: [
               SizedBox(
                 width: 30,
@@ -70,7 +96,7 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           Container(
             height: MediaQuery.of(context).size.height * .617,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color.fromRGBO(107, 59, 225, .85),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(18),
@@ -85,11 +111,10 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     TextField(
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      controller: _name,
-                      obscureText: true,
+                      controller: _nameController,
                       enableSuggestions: false,
                       autocorrect: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.person_3_outlined,
                           color: Colors.white,
@@ -115,11 +140,10 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     TextField(
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      controller: _uname,
-                      obscureText: true,
+                      controller: _unameController,
                       enableSuggestions: false,
                       autocorrect: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.supervised_user_circle_outlined,
                           color: Colors.white,
@@ -145,11 +169,10 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     TextField(
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      controller: _phone,
-                      obscureText: true,
+                      controller: _phoneController,
                       enableSuggestions: false,
                       autocorrect: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.phone_android_outlined,
                           color: Colors.white,
@@ -179,7 +202,7 @@ class _RegisterViewState extends State<RegisterView> {
                       autocorrect: false,
                       keyboardType: TextInputType.emailAddress,
                       cursorColor: Color.fromRGBO(107, 10, 225, 1),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.email,
                             color: Colors.white,
@@ -207,7 +230,7 @@ class _RegisterViewState extends State<RegisterView> {
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.password,
                           color: Colors.white,
@@ -247,23 +270,54 @@ class _RegisterViewState extends State<RegisterView> {
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ))),
-                        onPressed: ()
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (context) => LoginView()));
-                            // },
-                            async {
+                        onPressed: () async {
                           final email = _email.text;
                           final password = _password.text;
+
+                          myUser newUser = myUser(
+                            name: _nameController.text,
+                            username: _unameController.text,
+                            phone: _phoneController.text,
+                          );
                           try {
                             await FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
-                                    email: email, password: password);
+                              email: email,
+                              password: password,
+                            );
+
                             final user = FirebaseAuth.instance.currentUser;
-                            user?.sendEmailVerification();
-                            Navigator.of(context)
-                                .pushNamed('/VerifyEmailView/');
+                            await user?.sendEmailVerification();
+
+                            _addUserToFirestore(newUser);
+                            _email.clear();
+                            _nameController.clear();
+                            _password.clear();
+                            _unameController.clear();
+                            _phoneController.clear();
+
+                            if (user != null) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Email Verification'),
+                                    content: Text(
+                                        'Please check your email and verify your account.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          // Start checking email verification status
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                            //
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'Weak-Password') {
                               showErrorDialog(context, 'Weak Password');

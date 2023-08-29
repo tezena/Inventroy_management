@@ -5,11 +5,34 @@ import 'package:inventory/models/products.dart';
 import 'package:inventory/Services/database.dart';
 import 'package:inventory/models/products.dart' as pmodel;
 
-class ProductDetailPage extends StatelessWidget {
-  final FirestoreService _firestoreService = FirestoreService();
+class ProductDetailPage extends StatefulWidget {
   final pmodel.Product cuproduct;
 
   ProductDetailPage(this.cuproduct, {super.key});
+
+  @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  final FirestoreService _firestoreService = FirestoreService();
+  late pmodel.Product _product = widget.cuproduct;
+
+  void _navigateToEditScreen() async {
+    final existingProduct = _product;
+    final updatedData = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditScreen(existingProduct),
+      ),
+    );
+
+    if (updatedData != null) {
+      setState(() {
+        _product = updatedData;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +80,7 @@ class ProductDetailPage extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: Image.network(
-                    cuproduct.imageUrl,
+                    _product.imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -68,17 +91,11 @@ class ProductDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  cuproduct.name,
+                  _product.name,
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
-                    onPressed: () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditScreen(cuproduct.pid),
-                              ))
-                        },
+                    onPressed: () => {_navigateToEditScreen()},
                     icon: Icon(
                       Icons.edit_note,
                       size: 50,
@@ -131,20 +148,20 @@ class ProductDetailPage extends StatelessWidget {
             SizedBox(height: 16.0),
             SizedBox(height: 16.0),
             Text(
-              'Price: \$ ${cuproduct.price.toStringAsFixed(2)}',
+              'Price: \$ ${_product.price.toStringAsFixed(2)}',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 10.0),
-            Text('Expiry Date: ${cuproduct.expiredate}',
+            Text('Expiry Date: ${_product.expiredate}',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Colors.red)),
             SizedBox(height: 10.0),
-            Text('Supplier: ${cuproduct.distributor}',
+            Text('Supplier: ${_product.distributor}',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
             SizedBox(height: 10.0),
-            Text('Available Units: ${cuproduct.quantity}',
+            Text('Available Units: ${_product.quantity}',
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,

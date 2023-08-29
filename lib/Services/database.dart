@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:inventory/models/products.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import "package:flutter/material.dart";
+import 'package:inventory/models/usermodel.dart';
 
 class DatabaseService {
   final CollectionReference products =
@@ -31,13 +35,15 @@ class FirestoreService {
       return [];
     }
   }
-      
-      final CollectionReference productsCollection =
+
+  final CollectionReference productsCollection =
       FirebaseFirestore.instance.collection('products');
 
-  Future<void> updateProduct(String pid, Map<String, dynamic> updatedData) async {
+  Future<void> updateProduct(
+      String pid, Map<String, dynamic> updatedData) async {
     try {
-      QuerySnapshot querySnapshot = await productsCollection.where('pid', isEqualTo: pid).get();
+      QuerySnapshot querySnapshot =
+          await productsCollection.where('pid', isEqualTo: pid).get();
       if (querySnapshot.docs.isNotEmpty) {
         await querySnapshot.docs.first.reference.update(updatedData);
       }
@@ -46,31 +52,6 @@ class FirestoreService {
       throw error;
     }
   }
-  }
-
-//  Future<Product?> getProductByProduct(String pid) async {
-//   try {
-//     DocumentSnapshot doc =
-//         await _firestore.collection('products').doc(pid).get();
-//     if (doc.exists) {
-//       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-//       return Product(
-//         pid: doc.id,
-//         name: data['name'],
-//         quantity: data['quantity'],
-//         price: data['price'],
-//         distributor: data['distributor'],
-//         category: data['category'],
-//         imageUrl: data['imageUrl'],
-//         expiredate: data['expiredate'],
-//       );
-//     } else {
-//       return null; // Return null if the product doesn't exist.
-//     }
-//   } catch (e) {
-//     throw e;
-//   }
-// }
 
 
-// }
+}

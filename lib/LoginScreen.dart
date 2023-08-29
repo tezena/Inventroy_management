@@ -194,13 +194,10 @@ class _LoginViewState extends State<LoginView> {
                             email: email, password: password);
                         final user = FirebaseAuth.instance.currentUser;
                         if (user?.emailVerified ?? false) {
-                          // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //   '/home',
-                          //   (route) => false,
-                          // );
                           GoRouter.of(context).go('/home');
+                         
                         } else {
-                          GoRouter.of(context).go('/home');
+                          await showErrorDialog(context, 'Go to your Email and verifay.');
                         }
                       } on FirebaseAuthException catch (e) {
                         print("*********** ${e.code}");

@@ -5,29 +5,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-// class AddProductForm extends StatefulWidget {
-//   @override
-//   _AddProductFormState createState() => _AddProductFormState();
-// }
-
-// class _AddProductFormState extends State<AddProductForm> {
-//   final _formKey = GlobalKey<FormState>();
-//   final _nameController = TextEditingController();
-//   final _quantityController = TextEditingController();
-//   final _priceController = TextEditingController();
-//   final _distributorController = TextEditingController();
-//   final _categoryController = TextEditingController();
-//   late File _pickedImage; // Use File for selected image
-
-//   late ImagePicker _imagePicker;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _imagePicker = ImagePicker();
-//     _pickedImage = File(''); // Initialize with an empty File
-//   }
+import 'package:inventory/models/usermodel.dart';
 
 class AddProductForm extends StatefulWidget {
   @override

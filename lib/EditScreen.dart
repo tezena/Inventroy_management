@@ -6,31 +6,46 @@ import "package:inventory/Services/database.dart";
 import 'package:firebase_storage/firebase_storage.dart';
 
 class EditScreen extends StatefulWidget {
-  final String pid;
-  EditScreen(this.pid, {super.key});
+  final Product cuProduct;
+  EditScreen(this.cuProduct, {super.key});
   @override
   _EditScreenState createState() => _EditScreenState();
 }
 
 class _EditScreenState extends State<EditScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _quantityController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _distributorController = TextEditingController();
-  final _categoryController = TextEditingController();
-  final _pidController = TextEditingController();
-  final _expiredateController = TextEditingController();
-  late File _pickedImage; // Use File for selected image
+
+  late TextEditingController _nameController;
+  late TextEditingController _quantityController;
+  late TextEditingController _priceController;
+  late TextEditingController _distributorController;
+  late TextEditingController _categoryController;
+  late TextEditingController _pidController;
+  late TextEditingController _expiredateController;
+  late File _pickedImage;
   final FirestoreService _firestoreService = FirestoreService();
 
   late ImagePicker _imagePicker;
-
   @override
   void initState() {
     super.initState();
+
+    _nameController = TextEditingController(text: widget.cuProduct.name);
+    _quantityController =
+        TextEditingController(text: widget.cuProduct.quantity.toString());
+    _priceController =
+        TextEditingController(text: widget.cuProduct.price.toString());
+    _distributorController =
+        TextEditingController(text: widget.cuProduct.distributor.toString());
+    _categoryController =
+        TextEditingController(text: widget.cuProduct.category.toString());
+    _pidController =
+        TextEditingController(text: widget.cuProduct.pid.toString());
+    _expiredateController =
+        TextEditingController(text: widget.cuProduct.expiredate.toString());
+
     _imagePicker = ImagePicker();
-    _pickedImage = File(''); // Initialize with an empty File
+    _pickedImage = File(widget.cuProduct.imageUrl);
   }
 
   Future<void> _pickImage() async {
@@ -42,6 +57,20 @@ class _EditScreenState extends State<EditScreen> {
         _pickedImage = File(pickedImage.path);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    
+    _nameController.dispose();
+    _quantityController.dispose();
+    _priceController.dispose();
+    _pidController.dispose();
+    _categoryController.dispose();
+    _expiredateController.dispose();
+    _distributorController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -90,6 +119,8 @@ class _EditScreenState extends State<EditScreen> {
                           _pickedImage, // Use the File object here
                           fit: BoxFit.cover,
                         ),
+                        
+                        
                 ),
               ),
               const SizedBox(height: 30.0),
@@ -241,18 +272,48 @@ class _EditScreenState extends State<EditScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    Map<String, dynamic> updatedProductData = {
-                      'name': _nameController.text,
-                      'quantity': int.parse(_quantityController.text),
-                      'price': double.parse(_priceController.text),
-                      'distributor': _distributorController.text,
-                      'category': _categoryController.text,
-                      'expiredate': _expiredateController.text,
-                      'pid': _pidController.text,
-                    };
+                    Map<String, dynamic> updatedProductData = {};
+                    // {
+                    //   'name': _nameController.text,
+                    //   'quantity': int.parse(_quantityController.text),
+                    //   'price': double.parse(_priceController.text),
+                    //   'distributor': _distributorController.text,
+                    //   'category': _categoryController.text,
+                    //   'expiredate': _expiredateController.text,
+                    //   'pid': _pidController.text,
+                    // };
+                    if (_nameController.text != widget.cuProduct.name) {
+                      updatedProductData['name'] = _nameController.text;
+                    }
+                    if (_quantityController.text !=
+                        widget.cuProduct.quantity.toString()) {
+                      updatedProductData['quantity'] =
+                          int.parse(_quantityController.text);
+                    }
+                    if (_priceController.text !=
+                        widget.cuProduct.price.toString()) {
+                      updatedProductData['price'] =
+                          double.parse(_priceController.text);
+                    }
+                    if (_distributorController.text !=
+                        widget.cuProduct.distributor) {
+                      updatedProductData['distributor'] =
+                          _distributorController.text;
+                    }
+                    if (_categoryController.text != widget.cuProduct.category) {
+                      updatedProductData['category'] = _categoryController.text;
+                    }
+                    if (_expiredateController.text !=
+                        widget.cuProduct.expiredate) {
+                      updatedProductData['expiredate'] =
+                          _expiredateController.text;
+                    }
+                    if (_pidController.text != widget.cuProduct.pid) {
+                      updatedProductData['pid'] = _pidController.text;
+                    }
 
                     // Upload the new image if selected
-                    if (_pickedImage.path.isNotEmpty) {
+                    if (_pickedImage.path != widget.cuProduct.imageUrl) {
                       final String fileName =
                           DateTime.now().millisecondsSinceEpoch.toString();
                       final Reference storageReference = FirebaseStorage
@@ -270,12 +331,23 @@ class _EditScreenState extends State<EditScreen> {
 
                     try {
                       await _firestoreService.updateProduct(
-                          widget.pid, updatedProductData);
-                      ScaffoldMessenger.of(context).showSnackBar(
+                          widget.cuProduct.pid, updatedProductData);
+                      Product updatedProduct = Product(
+                        name: _nameController.text,
+                        quantity: int.parse(_quantityController.text),
+                        price: double.parse(_priceController.text),
+                        distributor: _distributorController.text,
+                        category: _categoryController.text,
+                        imageUrl: _pickedImage.path,
+                        expiredate: _expiredateController.text,
+                        pid: _pidController.text,
+                      );
+                      await ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Product updated successfully'),
                         ),
                       );
+                      Navigator.pop(context, updatedProduct);
                     } catch (error) {
                       print('Error updating product: $error');
                       ScaffoldMessenger.of(context).showSnackBar(
