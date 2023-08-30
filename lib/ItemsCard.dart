@@ -17,8 +17,8 @@ class ItmeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: MediaQuery.of(context).size.height * .40,
-        width: MediaQuery.of(context).size.width * .45,
+        height: MediaQuery.of(context).size.height * .16,
+        width: MediaQuery.of(context).size.width * .95,
         child: GestureDetector(
             onTap: () {
               Navigator.push(
@@ -38,16 +38,16 @@ class ItmeCard extends StatelessWidget {
                       ? const BorderSide(
                           width: 2, color: Color.fromRGBO(107, 59, 225, 1))
                       : BorderSide.none),
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
-                    height: 110,
-                    width: 100,
+                    height: 250,
+                    width: 200,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20)),
+                          bottomLeft: Radius.circular(20),
+                          topLeft: Radius.circular(20)),
                       child: Image.network(
                         currentProduct.imageUrl,
                         fit: BoxFit.cover,
@@ -55,8 +55,7 @@ class ItmeCard extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 8, right: 20),
+                      padding: const EdgeInsets.only(top: 10, right: 20),
                       child: Text(
                         currentProduct.name,
                         style: const TextStyle(

@@ -22,8 +22,6 @@ class _ItemsScreenState extends State<ItemsScreen> {
   }
 }
 
-
-
 class ItemsList extends StatefulWidget {
   const ItemsList({Key? key}) : super(key: key);
 
@@ -100,21 +98,14 @@ class ItemsListState extends State<ItemsList> {
                           padding: const EdgeInsets.all(
                             12,
                           ),
-                          child: GridView.builder(
+                          child: ListView.builder(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               primary: false,
                               itemCount: _products.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 5,
-                                      crossAxisSpacing: 5,
-                                      childAspectRatio: 0.9),
                               itemBuilder: (ctx, index) {
                                 Product singleProduct = _products[index];
-                                return ItmeCard(
-                                    singleProduct);
+                                return ItmeCard(singleProduct);
                               }),
                         ),
                   const SizedBox(
@@ -126,4 +117,3 @@ class ItemsListState extends State<ItemsList> {
     );
   }
 }
-
