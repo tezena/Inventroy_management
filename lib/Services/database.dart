@@ -53,5 +53,53 @@ class FirestoreService {
     }
   }
 
+  Future<void> deleteProduct(String pid) async {
+    try {
+      final productsCollection =
+          FirebaseFirestore.instance.collection('products');
+      final snapshot =
+          await productsCollection.where('pid', isEqualTo: pid).get();
 
+      if (snapshot.docs.isNotEmpty) {
+        final productDoc = snapshot.docs.first;
+        await productDoc.reference.delete();
+        print("Product deleted successfully");
+      } else {
+        print("Product not found");
+      }
+    } catch (e) {
+      print("Error deleting product: $e");
+      throw Exception("Error deleting product");
+    }
+  }
+
+  Future<Product> getProductByPid(String pid) async {
+    try {
+      print("searching ****************** $pid");
+      final productsCollection =
+          FirebaseFirestore.instance.collection('products');
+      final querySnapshot =
+          await productsCollection.where('pid', isEqualTo: pid).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final documentSnapshot = querySnapshot.docs[0];
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        return Product(
+          pid: data['pid'] as String,
+          name: data['name'] as String,
+          quantity: data['quantity'] as int,
+          price: data['price'] as double,
+          distributor: data['distributor'] as String,
+          category: data['category'] as String,
+          imageUrl: data['imageUrl'] as String,
+          expiredate: data['expiredate'] as String,
+        );
+      } else {
+        throw Exception("Product with PID $pid not found");
+      }
+    } catch (e) {
+      throw Exception("Error fetching product: $e");
+    }
+  }
 }

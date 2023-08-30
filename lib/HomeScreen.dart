@@ -4,6 +4,7 @@ import "package:inventory/AllText.dart";
 import 'package:inventory/FCard.dart';
 import 'package:inventory/NotificationScreen.dart';
 import 'package:inventory/profileScreen.dart';
+import 'package:inventory/SearchBar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => NotificationPage()));
                     },
-                    icon:const  Icon(
+                    icon: const Icon(
                       Icons.notifications_none_outlined,
                       size: 30,
                     ))
@@ -57,33 +58,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            SizedBox(
-              height: 50,
-              width: MediaQuery.of(context).size.width * 0.82,
-              child: TextFormField(
-                cursorColor:const Color.fromRGBO(107, 59, 225, 1),
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  hintText: "Search...",
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: Color.fromRGBO(107, 59, 225, 1),
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  prefixIcon: Icon(
-                    Icons.search_outlined,
-                    color: Color.fromRGBO(107, 59, 225, 1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color.fromRGBO(107, 59, 225, 1), width: 4)),
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
+            SearChBar(),
             const SizedBox(
               height: 15,
             ),
@@ -155,7 +130,7 @@ class _MySliderState extends State<MySlider> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225, 1),
         ),
-        child:const  HeroSec("Today", "Aug 22"),
+        child: const HeroSec("Today", "Aug 22"),
       ),
       Container(
         width: MediaQuery.of(context).size.width,
@@ -164,7 +139,7 @@ class _MySliderState extends State<MySlider> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Color.fromRGBO(107, 59, 225, 1),
         ),
-        child:const  HeroSec("Yesterday", "Aug 21"),
+        child: const HeroSec("Yesterday", "Aug 21"),
       ),
     ];
 

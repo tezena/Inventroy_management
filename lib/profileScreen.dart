@@ -259,19 +259,25 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
   }
-  void _navigateToProfileEdit() async {
-  final shouldReload = await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ProfileEditForm(),
-    ),
-  );
 
-  if (shouldReload == true) {
-    // Reload the page or perform any necessary action
-    _loadUserProfile(); // For example, call a function to reload user data
+  Future<void> _loadUserProfile() async {
+    // Load user profile data and update _userProfile
+    // Use your data fetching mechanism, such as Firestore
+
+    setState(() {
+      _fetchUserData();
+    });
   }
-}
+
+  void _navigateToProfileEdit() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfileEditPage(_user!),
+      ),
+    );
+    _loadUserProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -290,26 +296,79 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Center(
         child: _user != null
             ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: 50,
+                  ),
                   CircleAvatar(
-                    radius: 75,
+                    backgroundColor: Color.fromRGBO(107, 59, 225, 1),
+                    radius: 120,
                     backgroundImage: NetworkImage(_user!.imageUrl),
                   ),
-                  Text('Full Name: ${_user!.name}'),
-                  Text('Username: ${_user!.username}'),
-                  Text('Phone: ${_user!.phone}'),
-                  Text('Role: ${_user!.Role}'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Card(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 20),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: Text(
+                          'Full Name            ${_user!.name}',
+                          style: TextStyle(fontSize: 20),
+                        )),
+                  )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Card(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 20),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: Text(
+                          'User Name          ${_user!.username}',
+                          style: TextStyle(fontSize: 20),
+                        )),
+                  )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Card(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 20),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: Text(
+                          'Phone                   ${_user!.phone}',
+                          style: TextStyle(fontSize: 20),
+                        )),
+                  )),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfileEditPage(_user!),
-                        ),
-                      );
+                      _navigateToProfileEdit();
                     },
-                    child: Text('Edit'),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromRGBO(107, 59, 225, 1),
+                    )),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width * .8,
+                        child: Center(
+                            child: Text(
+                          'Edit',
+                          style: TextStyle(fontSize: 20),
+                        ))),
                   ),
                 ],
               )

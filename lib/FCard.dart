@@ -4,6 +4,7 @@ import 'package:inventory/BottomNavigationBar.dart';
 import 'package:inventory/HomeScreen.dart';
 import 'package:inventory/ItemsList.dart';
 import 'package:inventory/reporScreen.dart';
+import 'package:inventory/stockout.dart';
 
 class ImageTextCard extends StatelessWidget {
   final String imagePath;
@@ -32,7 +33,7 @@ class ImageTextCard extends StatelessWidget {
               } else if (text == "Inventory") {
                 return ItemsScreen();
               } else {
-                return BottomNavigationScreen();
+                return StockOutPage();
               }
             }));
           },
