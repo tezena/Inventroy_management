@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:firebase_core/firebase_core.dart';
+import "package:inventory/Services/database.dart";
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReportPage extends StatelessWidget {
-  final double totalStockAmount = 4321;
-  final int totalCategories = 3;
-  final List<Product> runningOutProducts = [
-    Product('Product A', 5, "assets/images/shoe1.jpg"),
-    Product('Product B', 8, "assets/images/shoe1.jpg"),
-    Product('Product C', 10, "assets/images/shoe1.jpg"),
-    Product('Product A', 5, "assets/images/shoe1.jpg"),
-    Product('Product B', 8, "assets/images/shoe1.jpg"),
-    Product('Product C', 10, "assets/images/shoe1.jpg"),
-  ];
   final List<Product> topSellingProducts = [
     Product('Product D', 15, "assets/images/shoe1.jpg"),
     Product('Product E', 12, "assets/images/shoe1.jpg"),
@@ -52,11 +45,11 @@ class ReportPage extends StatelessWidget {
                 SizedBox(
                   width: 30,
                 ),
-                _buildTotalStockCircularIndicator('$totalStockAmount'),
+                _buildTotalStockCircularIndicator(),
                 SizedBox(
                   width: 10,
                 ),
-                _buildTotalCategoryCircularIndicator(' $totalCategories'),
+                _buildTotalCategoryCircularIndicator(),
               ],
             ),
             SizedBox(height: 32.0),
@@ -85,30 +78,48 @@ class ReportPage extends StatelessWidget {
             SizedBox(height: 8.0),
             SizedBox(
               height: 140.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: runningOutProducts.length,
-                itemBuilder: (context, index) {
-                  final product = runningOutProducts[index];
-                  return Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Container(
-                            width: 100.0,
-                            height: 100.0,
-                            alignment: Alignment.center,
-                            child: ClipRRect(
-                              child: Image.asset(
-                                product.ImageUrl,
-                                fit: BoxFit.fill,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('products')
+                    .where('quantity', isLessThan: 5)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final runningOutProducts = snapshot.data!.docs;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: runningOutProducts.length,
+                      itemBuilder: (context, index) {
+                        final product = runningOutProducts[index];
+                        final productData =
+                            product.data() as Map<String, dynamic>;
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 100.0,
+                                height: 100.0,
+                                alignment: Alignment.center,
+                                child: ClipRRect(
+                                  child: Image.network(
+                                    productData['imageUrl'] as String,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
                               ),
-                            )),
-                        SizedBox(height: 4.0),
-                        Text('Quantity: ${product.quantity}'),
-                      ],
-                    ),
-                  );
+                              SizedBox(height: 4.0),
+                              Text('Quantity: ${productData['quantity']}'),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return CircularProgressIndicator();
+                  }
                 },
               ),
             ),
@@ -253,61 +264,104 @@ class ReportPage extends StatelessWidget {
   }
 }
 
-Widget _buildTotalStockCircularIndicator(String text) {
+Widget _buildTotalStockCircularIndicator() {
   return Center(
     child: Container(
-        width: 150.0,
-        height: 150.0,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: Colors.green, width: 5)),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 45,
-              ),
-              Text(
-                text,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                "Total Items",
-                style: TextStyle(fontSize: 16),
-              )
-            ],
-          ),
-        )),
+      width: 150.0,
+      height: 150.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: Colors.green, width: 5),
+      ),
+      child: Center(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('products').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              int totalItems = snapshot.data!.docs.length;
+
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 45,
+                  ),
+                  Text(
+                    totalItems.toString(),
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    "Total Items",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        ),
+      ),
+    ),
   );
 }
 
-Widget _buildTotalCategoryCircularIndicator(String text) {
+Widget _buildTotalCategoryCircularIndicator() {
   return Center(
     child: Container(
-        width: 150.0,
-        height: 150.0,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: Colors.blue, width: 5)),
-        child: Center(
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 45,
-                ),
-                Text(
-                  text,
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  "Total Category",
-                  style: TextStyle(fontSize: 16),
-                )
-              ],
-            ),
-          ),
-        )),
+      width: 150.0,
+      height: 150.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: Colors.blue, width: 5),
+      ),
+      child: Center(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('products').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final items = snapshot.data!.docs;
+              final categoryCounts = <String, int>{};
+
+              for (final item in items) {
+                final categoryName = item['category'] as String;
+                categoryCounts[categoryName] =
+                    (categoryCounts[categoryName] ?? 0) + 1;
+              }
+
+              final totalCategories = categoryCounts.length;
+
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 45,
+                  ),
+                  Text(
+                    totalCategories.toString(),
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    "Total Categories",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        ),
+      ),
+    ),
   );
 }
 
