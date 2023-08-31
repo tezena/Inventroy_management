@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import "package:flutter/material.dart";
 import 'package:inventory/models/usermodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
   final CollectionReference products =
@@ -13,10 +14,17 @@ class DatabaseService {
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? user = FirebaseAuth.instance.currentUser;
+
+  Future<void> _CheckUser() async {}
 
   Future<List<Product>> getProducts() async {
     try {
-      QuerySnapshot snapshot = await _firestore.collection('products').get();
+      QuerySnapshot snapshot = await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .collection('products')
+          .get();
       List<Product> products = snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         return Product(
@@ -36,14 +44,15 @@ class FirestoreService {
     }
   }
 
-  final CollectionReference productsCollection =
-      FirebaseFirestore.instance.collection('products');
-
   Future<void> updateProduct(
       String pid, Map<String, dynamic> updatedData) async {
     try {
-      QuerySnapshot querySnapshot =
-          await productsCollection.where('pid', isEqualTo: pid).get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .collection('products')
+          .where('pid', isEqualTo: pid)
+          .get();
       if (querySnapshot.docs.isNotEmpty) {
         await querySnapshot.docs.first.reference.update(updatedData);
       }
@@ -56,7 +65,7 @@ class FirestoreService {
   Future<void> deleteProduct(String pid) async {
     try {
       final productsCollection =
-          FirebaseFirestore.instance.collection('products');
+          _firestore.collection('users').doc(user!.uid).collection('products');
       final snapshot =
           await productsCollection.where('pid', isEqualTo: pid).get();
 
@@ -76,10 +85,12 @@ class FirestoreService {
   Future<Product> getProductByPid(String pid) async {
     try {
       print("searching ****************** $pid");
-      final productsCollection =
-          FirebaseFirestore.instance.collection('products');
-      final querySnapshot =
-          await productsCollection.where('pid', isEqualTo: pid).get();
+      final querySnapshot = await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .collection('products')
+          .where('pid', isEqualTo: pid)
+          .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         final documentSnapshot = querySnapshot.docs[0];

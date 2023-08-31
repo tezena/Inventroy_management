@@ -3,8 +3,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:inventory/Services/database.dart";
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inventory/models/usermodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ReportPage extends StatelessWidget {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? user = FirebaseAuth.instance.currentUser;
+
   final List<Product> topSellingProducts = [
     Product('Product D', 15, "assets/images/shoe1.jpg"),
     Product('Product E', 12, "assets/images/shoe1.jpg"),
@@ -79,9 +84,11 @@ class ReportPage extends StatelessWidget {
             SizedBox(
               height: 140.0,
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
+                stream: _firestore
+                    .collection('users')
+                    .doc(user!.uid)
                     .collection('products')
-                    .where('quantity', isLessThan: 5)
+                    .where('quantity', isLessThan: 10)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -311,6 +318,8 @@ Widget _buildTotalStockCircularIndicator() {
 }
 
 Widget _buildTotalCategoryCircularIndicator() {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? user = FirebaseAuth.instance.currentUser;
   return Center(
     child: Container(
       width: 150.0,
@@ -321,7 +330,11 @@ Widget _buildTotalCategoryCircularIndicator() {
       ),
       child: Center(
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('products').snapshots(),
+          stream: _firestore
+              .collection('users')
+              .doc(user!.uid)
+              .collection('products')
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final items = snapshot.data!.docs;

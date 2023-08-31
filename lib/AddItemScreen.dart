@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:inventory/models/usermodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddProductForm extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _AddProductFormState extends State<AddProductForm> {
 
   late ImagePicker _imagePicker;
   late FirebaseFirestore _firestore;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -59,7 +61,11 @@ class _AddProductFormState extends State<AddProductForm> {
 
       final String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('products').add({
+      await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .collection('products')
+          .add({
         'name': newProduct.name,
         'pid': newProduct.pid,
         'quantity': newProduct.quantity,
@@ -69,16 +75,15 @@ class _AddProductFormState extends State<AddProductForm> {
         'expiredate': newProduct.expiredate,
         'imageUrl': imageUrl, // Store the image URL
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product added to Firestore')),
-      );
     } catch (e) {
       print('Error adding product: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error adding product: $e')),
       );
     }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Product added to Firestore')),
+    );
   }
 
   @override
