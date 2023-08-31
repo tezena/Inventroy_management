@@ -84,7 +84,7 @@ class _SearChBarState extends State<SearChBar> {
             ),
             borderRadius: BorderRadius.all(Radius.circular(5)),
           ),
-          prefixIcon: GestureDetector(
+          suffixIcon: GestureDetector(
             onTap: () {
               _showSearchResults(context); // Trigger search here
             },
@@ -145,7 +145,7 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
       itemCount: filteredResults.length,
       itemBuilder: (context, index) {
         final item = filteredResults[index];
-        return ItmeCard(item);
+        return SizedBox(width: 200, child: ItmeCard(item));
       },
     );
   }
@@ -162,47 +162,44 @@ class ProductSearchDelegate extends SearchDelegate<Product> {
       body: isLoading
           ? Center(
               child: Container(
-                height: 100,
-                width: 100,
                 alignment: Alignment.center,
                 child: const CircularProgressIndicator(),
               ),
             )
           : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  filteredResults.isEmpty
-                      ? const Center(
-                          child: Text(" product is Empty"),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(
-                            12,
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    filteredResults.isEmpty
+                        ? const Center(
+                            child: Text(" product is Empty"),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(
+                              12,
+                            ),
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount: filteredResults.length,
+                                itemBuilder: (ctx, index) {
+                                  Product singleProduct =
+                                      filteredResults[index];
+                                  return SizedBox(
+                                      width: 200,
+                                      child: ItmeCard(singleProduct));
+                                }),
                           ),
-                          child: GridView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: filteredResults.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 5,
-                                      crossAxisSpacing: 5,
-                                      childAspectRatio: 0.9),
-                              itemBuilder: (ctx, index) {
-                                Product singleProduct = filteredResults[index];
-                                return ItmeCard(singleProduct);
-                              }),
-                        ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 12.0,
+                    ),
+                  ],
+                ),
               ),
             ),
     );

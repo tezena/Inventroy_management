@@ -272,6 +272,8 @@ class ReportPage extends StatelessWidget {
 }
 
 Widget _buildTotalStockCircularIndicator() {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? user = FirebaseAuth.instance.currentUser;
   return Center(
     child: Container(
       width: 150.0,
@@ -282,7 +284,11 @@ Widget _buildTotalStockCircularIndicator() {
       ),
       child: Center(
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('products').snapshots(),
+          stream: _firestore
+              .collection('users')
+              .doc(user!.uid)
+              .collection('products')
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               int totalItems = snapshot.data!.docs.length;

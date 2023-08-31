@@ -113,4 +113,17 @@ class FirestoreService {
       throw Exception("Error fetching product: $e");
     }
   }
+
+  Future<void> registerTransaction(String productId, int quantitySold) async {
+  final transactionsRef = _firestore.collection('users').doc(user!.uid).collection('transactions');
+
+  await transactionsRef.add({
+    'productId': productId,
+    'quantitySold': quantitySold,
+    'saleDate': FieldValue.serverTimestamp(),
+  });
+
+  // Update product status or other necessary actions
+}
+
 }

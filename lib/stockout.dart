@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:inventory/Services/database.dart';
 import 'package:inventory/models/products.dart';
 import 'package:inventory/ItemsCard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inventory/showDialog.dart';
 
 class StockOutPage extends StatefulWidget {
   @override
@@ -42,6 +46,24 @@ class _StockOutPageState extends State<StockOutPage> {
     });
   }
 
+  Future<void> registerTransaction() async {
+    print(" ********** transaction update");
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+    final transactionsRef = _firestore
+        .collection('users')
+        .doc(user!.uid)
+        .collection('transactions');
+
+    await transactionsRef.add({
+      'productId': _selectedProduct!.pid,
+      'quantitySold': int.parse(_quantityController.text),
+      'saleDate': FieldValue.serverTimestamp(),
+    });
+
+    // Update product status or other necessary actions
+  }
+
   Future<void> _updateProductQuantity() async {
     if (_selectedOption == null ||
         _quantityController.text.isEmpty ||
@@ -59,6 +81,9 @@ class _StockOutPageState extends State<StockOutPage> {
       }
       newQuantity -= quantity;
     }
+    if (_selectedOption == "Sold Out") {
+      registerTransaction();
+    }
 
     if (newQuantity <= 0) {
       await _firestoreService.deleteProduct(_selectedProduct!.pid);
@@ -67,8 +92,22 @@ class _StockOutPageState extends State<StockOutPage> {
         'quantity': newQuantity,
       });
     }
-
-    Navigator.pop(context);
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text('product $_selectedOption successfuly'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showAlertDialog(String title, String message) {
@@ -108,7 +147,7 @@ class _StockOutPageState extends State<StockOutPage> {
               TextFormField(
                 cursorColor: Color.fromRGBO(107, 59, 225, 1),
                 controller: _pidController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     labelText: 'Product ID',
                     labelStyle:
