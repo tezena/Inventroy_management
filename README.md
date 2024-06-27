@@ -20,3 +20,4 @@ FlutterInventory Manager is a powerful and user-friendly app developed by our in
 FlutterInventory Manager is a powerful inventory management app developed by our dedicated internship group. With its user-friendly interface and robust features, it helps businesses streamline their inventory processes, improve efficiency, and make data-driven decisions. Simplify your inventory management today and experience the benefits of FlutterInventory Manager.
 
 "# Inventory_Management" 
+"# Inventory" 
