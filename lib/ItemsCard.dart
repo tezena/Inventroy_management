@@ -43,7 +43,7 @@ class ItmeCard extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 250,
-                    width: 200,
+                    width: 190,
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(10),

@@ -66,7 +66,7 @@ class ImageTextCard extends StatelessWidget {
                     child: Text(
                       text,
                       style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: isTrue
                               ? const Color.fromRGBO(107, 59, 225, 1)

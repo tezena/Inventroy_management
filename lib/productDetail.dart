@@ -116,7 +116,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Text(
                       "Daily Activity",
@@ -128,11 +128,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     Row(
                       children: [
                         SizedBox(
-                          width: 40,
+                          width: 25,
                         ),
                         SizedBox(
-                          height: 180.0,
-                          width: 180,
+                          height: 168.0,
+                          width: 168,
                           child: charts.PieChart(
                             data,
                             animate: true,

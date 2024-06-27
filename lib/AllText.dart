@@ -23,7 +23,7 @@ class _InfoState extends State<Info> {
           Text(
             widget.text1,
             style: TextStyle(
-                color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 10,
@@ -31,7 +31,7 @@ class _InfoState extends State<Info> {
           Text(
             widget.text2,
             style: TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
           )
         ],
       )),

@@ -276,8 +276,8 @@ Widget _buildTotalStockCircularIndicator() {
   User? user = FirebaseAuth.instance.currentUser;
   return Center(
     child: Container(
-      width: 150.0,
-      height: 150.0,
+      width: 140.0,
+      height: 140.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         border: Border.all(color: Colors.green, width: 5),
@@ -328,8 +328,8 @@ Widget _buildTotalCategoryCircularIndicator() {
   User? user = FirebaseAuth.instance.currentUser;
   return Center(
     child: Container(
-      width: 150.0,
-      height: 150.0,
+      width: 140.0,
+      height: 140.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         border: Border.all(color: Colors.blue, width: 5),

@@ -96,7 +96,7 @@ class ItemsListState extends State<ItemsList> {
                         )
                       : Padding(
                           padding: const EdgeInsets.all(
-                            12,
+                            10,
                           ),
                           child: ListView.builder(
                               padding: EdgeInsets.zero,
